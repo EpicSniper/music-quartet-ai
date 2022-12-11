@@ -64,4 +64,4 @@ if __name__ == "__main__":
     piece = pieces[0]
 
     print(f"Has acceptable duration? {has_acceptable_durations(piece, ACCEPTABLE_DURATIONS)}")
-    #piece.show()
+    piece.show()
