@@ -1,0 +1,357 @@
+MidiTrack([
+  MetaMessage('track_name', name='Housle 1\x00', time=0),
+  MetaMessage('time_signature', numerator=4, denominator=4, clocks_per_click=24, notated_32nd_notes_per_beat=8, time=0),
+  MetaMessage('key_signature', key='C', time=0),
+  MetaMessage('set_tempo', tempo=500000, time=0),
+  Message('control_change', channel=0, control=121, value=0, time=0),
+  Message('program_change', channel=0, program=40, time=0),
+  Message('control_change', channel=0, control=7, value=100, time=0),
+  Message('control_change', channel=0, control=10, value=64, time=0),
+  Message('control_change', channel=0, control=91, value=0, time=0),
+  Message('control_change', channel=0, control=93, value=0, time=0),
+  MetaMessage('midi_port', port=0, time=0),
+  Message('note_on', channel=0, note=60, velocity=80, time=0),
+  Message('control_change', channel=0, control=2, value=80, time=0),
+  Message('control_change', channel=1, control=121, value=0, time=0),
+  Message('program_change', channel=1, program=45, time=0),
+  Message('control_change', channel=1, control=7, value=100, time=0),
+  Message('control_change', channel=1, control=10, value=64, time=0),
+  Message('control_change', channel=1, control=91, value=0, time=0),
+  Message('control_change', channel=1, control=93, value=0, time=0),
+  MetaMessage('midi_port', port=0, time=0),
+  Message('control_change', channel=2, control=121, value=0, time=0),
+  Message('program_change', channel=2, program=44, time=0),
+  Message('control_change', channel=2, control=7, value=100, time=0),
+  Message('control_change', channel=2, control=10, value=64, time=0),
+  Message('control_change', channel=2, control=91, value=0, time=0),
+  Message('control_change', channel=2, control=93, value=0, time=0),
+  MetaMessage('midi_port', port=0, time=0),
+  Message('note_on', channel=0, note=60, velocity=0, time=479),
+  Message('note_on', channel=0, note=60, velocity=80, time=1),
+  Message('control_change', channel=0, control=2, value=80, time=0),
+  Message('note_on', channel=0, note=60, velocity=0, time=479),
+  Message('note_on', channel=0, note=67, velocity=80, time=1),
+  Message('control_change', channel=0, control=2, value=80, time=0),
+  Message('note_on', channel=0, note=67, velocity=0, time=479),
+  Message('note_on', channel=0, note=67, velocity=80, time=1),
+  Message('control_change', channel=0, control=2, value=80, time=0),
+  Message('note_on', channel=0, note=67, velocity=0, time=479),
+  Message('note_on', channel=0, note=69, velocity=80, time=1),
+  Message('control_change', channel=0, control=2, value=80, time=0),
+  Message('note_on', channel=0, note=69, velocity=0, time=479),
+  Message('note_on', channel=0, note=69, velocity=80, time=1),
+  Message('control_change', channel=0, control=2, value=80, time=0),
+  Message('note_on', channel=0, note=69, velocity=0, time=479),
+  Message('note_on', channel=0, note=67, velocity=80, time=1),
+  Message('control_change', channel=0, control=2, value=80, time=0),
+  Message('note_on', channel=0, note=67, velocity=0, time=479),
+  Message('note_on', channel=0, note=65, velocity=80, time=481),
+  Message('control_change', channel=0, control=2, value=80, time=0),
+  Message('note_on', channel=0, note=65, velocity=0, time=479),
+  Message('note_on', channel=0, note=65, velocity=80, time=1),
+  Message('control_change', channel=0, control=2, value=80, time=0),
+  Message('note_on', channel=0, note=65, velocity=0, time=479),
+  Message('note_on', channel=0, note=64, velocity=80, time=1),
+  Message('control_change', channel=0, control=2, value=80, time=0),
+  Message('note_on', channel=0, note=64, velocity=0, time=479),
+  Message('note_on', channel=0, note=64, velocity=80, time=1),
+  Message('control_change', channel=0, control=2, value=80, time=0),
+  Message('note_on', channel=0, note=64, velocity=0, time=479),
+  Message('note_on', channel=0, note=62, velocity=80, time=1),
+  Message('control_change', channel=0, control=2, value=80, time=0),
+  Message('note_on', channel=0, note=62, velocity=0, time=479),
+  Message('note_on', channel=0, note=62, velocity=80, time=1),
+  Message('control_change', channel=0, control=2, value=80, time=0),
+  Message('note_on', channel=0, note=62, velocity=0, time=479),
+  Message('note_on', channel=0, note=60, velocity=80, time=1),
+  Message('control_change', channel=0, control=2, value=80, time=0),
+  Message('note_on', channel=0, note=60, velocity=0, time=479),
+  MetaMessage('end_of_track', time=1)])
+note_on channel=0 note=60 velocity=80 time=0
+note_on channel=0 note=60 velocity=0 time=479
+note_on channel=0 note=60 velocity=80 time=1
+note_on channel=0 note=60 velocity=0 time=479
+note_on channel=0 note=67 velocity=80 time=1
+note_on channel=0 note=67 velocity=0 time=479
+note_on channel=0 note=67 velocity=80 time=1
+note_on channel=0 note=67 velocity=0 time=479
+note_on channel=0 note=69 velocity=80 time=1
+note_on channel=0 note=69 velocity=0 time=479
+note_on channel=0 note=69 velocity=80 time=1
+note_on channel=0 note=69 velocity=0 time=479
+note_on channel=0 note=67 velocity=80 time=1
+note_on channel=0 note=67 velocity=0 time=479
+note_on channel=0 note=65 velocity=80 time=481
+note_on channel=0 note=65 velocity=0 time=479
+note_on channel=0 note=65 velocity=80 time=1
+note_on channel=0 note=65 velocity=0 time=479
+note_on channel=0 note=64 velocity=80 time=1
+note_on channel=0 note=64 velocity=0 time=479
+note_on channel=0 note=64 velocity=80 time=1
+note_on channel=0 note=64 velocity=0 time=479
+note_on channel=0 note=62 velocity=80 time=1
+note_on channel=0 note=62 velocity=0 time=479
+note_on channel=0 note=62 velocity=80 time=1
+note_on channel=0 note=62 velocity=0 time=479
+note_on channel=0 note=60 velocity=80 time=1
+note_on channel=0 note=60 velocity=0 time=479
+MidiTrack([
+  MetaMessage('track_name', name='Housle 2\x00', time=0),
+  MetaMessage('key_signature', key='C', time=0),
+  Message('control_change', channel=3, control=121, value=0, time=0),
+  Message('program_change', channel=3, program=40, time=0),
+  Message('control_change', channel=3, control=7, value=100, time=0),
+  Message('control_change', channel=3, control=10, value=64, time=0),
+  Message('control_change', channel=3, control=91, value=0, time=0),
+  Message('control_change', channel=3, control=93, value=0, time=0),
+  MetaMessage('midi_port', port=0, time=0),
+  Message('note_on', channel=3, note=55, velocity=80, time=0),
+  Message('control_change', channel=3, control=2, value=80, time=0),
+  Message('control_change', channel=4, control=121, value=0, time=0),
+  Message('program_change', channel=4, program=45, time=0),
+  Message('control_change', channel=4, control=7, value=100, time=0),
+  Message('control_change', channel=4, control=10, value=64, time=0),
+  Message('control_change', channel=4, control=91, value=0, time=0),
+  Message('control_change', channel=4, control=93, value=0, time=0),
+  MetaMessage('midi_port', port=0, time=0),
+  Message('control_change', channel=5, control=121, value=0, time=0),
+  Message('program_change', channel=5, program=44, time=0),
+  Message('control_change', channel=5, control=7, value=100, time=0),
+  Message('control_change', channel=5, control=10, value=64, time=0),
+  Message('control_change', channel=5, control=91, value=0, time=0),
+  Message('control_change', channel=5, control=93, value=0, time=0),
+  MetaMessage('midi_port', port=0, time=0),
+  Message('note_on', channel=3, note=55, velocity=0, time=479),
+  Message('note_on', channel=3, note=55, velocity=80, time=1),
+  Message('control_change', channel=3, control=2, value=80, time=0),
+  Message('note_on', channel=3, note=55, velocity=0, time=479),
+  Message('note_on', channel=3, note=55, velocity=80, time=1),
+  Message('control_change', channel=3, control=2, value=80, time=0),
+  Message('note_on', channel=3, note=55, velocity=0, time=479),
+  Message('note_on', channel=3, note=60, velocity=80, time=1),
+  Message('control_change', channel=3, control=2, value=80, time=0),
+  Message('note_on', channel=3, note=60, velocity=0, time=479),
+  Message('note_on', channel=3, note=64, velocity=80, time=1),
+  Message('control_change', channel=3, control=2, value=80, time=0),
+  Message('note_on', channel=3, note=64, velocity=0, time=479),
+  Message('note_on', channel=3, note=65, velocity=80, time=1),
+  Message('control_change', channel=3, control=2, value=80, time=0),
+  Message('note_on', channel=3, note=65, velocity=0, time=479),
+  Message('note_on', channel=3, note=64, velocity=80, time=1),
+  Message('control_change', channel=3, control=2, value=80, time=0),
+  Message('note_on', channel=3, note=64, velocity=0, time=479),
+  Message('note_on', channel=3, note=62, velocity=80, time=481),
+  Message('control_change', channel=3, control=2, value=80, time=0),
+  Message('note_on', channel=3, note=62, velocity=0, time=479),
+  Message('note_on', channel=3, note=62, velocity=80, time=1),
+  Message('control_change', channel=3, control=2, value=80, time=0),
+  Message('note_on', channel=3, note=62, velocity=0, time=479),
+  Message('note_on', channel=3, note=60, velocity=80, time=1),
+  Message('control_change', channel=3, control=2, value=80, time=0),
+  Message('note_on', channel=3, note=60, velocity=0, time=479),
+  Message('note_on', channel=3, note=60, velocity=80, time=1),
+  Message('control_change', channel=3, control=2, value=80, time=0),
+  Message('note_on', channel=3, note=60, velocity=0, time=479),
+  Message('note_on', channel=3, note=55, velocity=80, time=1),
+  Message('control_change', channel=3, control=2, value=80, time=0),
+  Message('note_on', channel=3, note=55, velocity=0, time=479),
+  Message('note_on', channel=3, note=59, velocity=80, time=1),
+  Message('control_change', channel=3, control=2, value=80, time=0),
+  Message('note_on', channel=3, note=59, velocity=0, time=479),
+  Message('note_on', channel=3, note=60, velocity=80, time=1),
+  Message('control_change', channel=3, control=2, value=80, time=0),
+  Message('note_on', channel=3, note=60, velocity=0, time=479),
+  MetaMessage('end_of_track', time=1)])
+note_on channel=3 note=55 velocity=80 time=0
+note_on channel=3 note=55 velocity=0 time=479
+note_on channel=3 note=55 velocity=80 time=1
+note_on channel=3 note=55 velocity=0 time=479
+note_on channel=3 note=55 velocity=80 time=1
+note_on channel=3 note=55 velocity=0 time=479
+note_on channel=3 note=60 velocity=80 time=1
+note_on channel=3 note=60 velocity=0 time=479
+note_on channel=3 note=64 velocity=80 time=1
+note_on channel=3 note=64 velocity=0 time=479
+note_on channel=3 note=65 velocity=80 time=1
+note_on channel=3 note=65 velocity=0 time=479
+note_on channel=3 note=64 velocity=80 time=1
+note_on channel=3 note=64 velocity=0 time=479
+note_on channel=3 note=62 velocity=80 time=481
+note_on channel=3 note=62 velocity=0 time=479
+note_on channel=3 note=62 velocity=80 time=1
+note_on channel=3 note=62 velocity=0 time=479
+note_on channel=3 note=60 velocity=80 time=1
+note_on channel=3 note=60 velocity=0 time=479
+note_on channel=3 note=60 velocity=80 time=1
+note_on channel=3 note=60 velocity=0 time=479
+note_on channel=3 note=55 velocity=80 time=1
+note_on channel=3 note=55 velocity=0 time=479
+note_on channel=3 note=59 velocity=80 time=1
+note_on channel=3 note=59 velocity=0 time=479
+note_on channel=3 note=60 velocity=80 time=1
+note_on channel=3 note=60 velocity=0 time=479
+MidiTrack([
+  MetaMessage('track_name', name='Viola\x00', time=0),
+  MetaMessage('key_signature', key='C', time=0),
+  Message('control_change', channel=6, control=121, value=0, time=0),
+  Message('program_change', channel=6, program=41, time=0),
+  Message('control_change', channel=6, control=7, value=100, time=0),
+  Message('control_change', channel=6, control=10, value=64, time=0),
+  Message('control_change', channel=6, control=91, value=0, time=0),
+  Message('control_change', channel=6, control=93, value=0, time=0),
+  MetaMessage('midi_port', port=0, time=0),
+  Message('note_on', channel=6, note=48, velocity=80, time=0),
+  Message('control_change', channel=6, control=2, value=80, time=0),
+  Message('control_change', channel=7, control=121, value=0, time=0),
+  Message('program_change', channel=7, program=45, time=0),
+  Message('control_change', channel=7, control=7, value=100, time=0),
+  Message('control_change', channel=7, control=10, value=64, time=0),
+  Message('control_change', channel=7, control=91, value=0, time=0),
+  Message('control_change', channel=7, control=93, value=0, time=0),
+  MetaMessage('midi_port', port=0, time=0),
+  Message('control_change', channel=8, control=121, value=0, time=0),
+  Message('program_change', channel=8, program=44, time=0),
+  Message('control_change', channel=8, control=7, value=100, time=0),
+  Message('control_change', channel=8, control=10, value=64, time=0),
+  Message('control_change', channel=8, control=91, value=0, time=0),
+  Message('control_change', channel=8, control=93, value=0, time=0),
+  MetaMessage('midi_port', port=0, time=0),
+  Message('note_on', channel=6, note=48, velocity=0, time=959),
+  Message('note_on', channel=6, note=48, velocity=80, time=1),
+  Message('control_change', channel=6, control=2, value=80, time=0),
+  Message('note_on', channel=6, note=48, velocity=0, time=959),
+  Message('note_on', channel=6, note=60, velocity=80, time=1),
+  Message('control_change', channel=6, control=2, value=80, time=0),
+  Message('note_on', channel=6, note=60, velocity=0, time=959),
+  Message('note_on', channel=6, note=60, velocity=80, time=1),
+  Message('control_change', channel=6, control=2, value=80, time=0),
+  Message('note_on', channel=6, note=60, velocity=0, time=479),
+  Message('note_on', channel=6, note=59, velocity=80, time=481),
+  Message('control_change', channel=6, control=2, value=80, time=0),
+  Message('note_on', channel=6, note=59, velocity=0, time=959),
+  Message('note_on', channel=6, note=60, velocity=80, time=1),
+  Message('control_change', channel=6, control=2, value=80, time=0),
+  Message('note_on', channel=6, note=60, velocity=0, time=959),
+  Message('note_on', channel=6, note=60, velocity=80, time=1),
+  Message('control_change', channel=6, control=2, value=80, time=0),
+  Message('note_on', channel=6, note=60, velocity=0, time=479),
+  Message('note_on', channel=6, note=59, velocity=80, time=1),
+  Message('control_change', channel=6, control=2, value=80, time=0),
+  Message('note_on', channel=6, note=59, velocity=0, time=479),
+  Message('note_on', channel=6, note=60, velocity=80, time=1),
+  Message('control_change', channel=6, control=2, value=80, time=0),
+  Message('note_on', channel=6, note=60, velocity=0, time=479),
+  MetaMessage('end_of_track', time=1)])
+note_on channel=6 note=48 velocity=80 time=0
+note_on channel=6 note=48 velocity=0 time=959
+note_on channel=6 note=48 velocity=80 time=1
+note_on channel=6 note=48 velocity=0 time=959
+note_on channel=6 note=60 velocity=80 time=1
+note_on channel=6 note=60 velocity=0 time=959
+note_on channel=6 note=60 velocity=80 time=1
+note_on channel=6 note=60 velocity=0 time=479
+note_on channel=6 note=59 velocity=80 time=481
+note_on channel=6 note=59 velocity=0 time=959
+note_on channel=6 note=60 velocity=80 time=1
+note_on channel=6 note=60 velocity=0 time=959
+note_on channel=6 note=60 velocity=80 time=1
+note_on channel=6 note=60 velocity=0 time=479
+note_on channel=6 note=59 velocity=80 time=1
+note_on channel=6 note=59 velocity=0 time=479
+note_on channel=6 note=60 velocity=80 time=1
+note_on channel=6 note=60 velocity=0 time=479
+MidiTrack([
+  MetaMessage('track_name', name='Violoncello 1\x00', time=0),
+  MetaMessage('key_signature', key='C', time=0),
+  Message('control_change', channel=10, control=121, value=0, time=0),
+  Message('program_change', channel=10, program=42, time=0),
+  Message('control_change', channel=10, control=7, value=100, time=0),
+  Message('control_change', channel=10, control=10, value=64, time=0),
+  Message('control_change', channel=10, control=91, value=0, time=0),
+  Message('control_change', channel=10, control=93, value=0, time=0),
+  MetaMessage('midi_port', port=0, time=0),
+  Message('note_on', channel=10, note=48, velocity=80, time=0),
+  Message('control_change', channel=10, control=2, value=80, time=0),
+  Message('control_change', channel=11, control=121, value=0, time=0),
+  Message('program_change', channel=11, program=45, time=0),
+  Message('control_change', channel=11, control=7, value=100, time=0),
+  Message('control_change', channel=11, control=10, value=64, time=0),
+  Message('control_change', channel=11, control=91, value=0, time=0),
+  Message('control_change', channel=11, control=93, value=0, time=0),
+  MetaMessage('midi_port', port=0, time=0),
+  Message('control_change', channel=12, control=121, value=0, time=0),
+  Message('program_change', channel=12, program=44, time=0),
+  Message('control_change', channel=12, control=7, value=100, time=0),
+  Message('control_change', channel=12, control=10, value=64, time=0),
+  Message('control_change', channel=12, control=91, value=0, time=0),
+  Message('control_change', channel=12, control=93, value=0, time=0),
+  MetaMessage('midi_port', port=0, time=0),
+  Message('note_on', channel=10, note=48, velocity=0, time=479),
+  Message('note_on', channel=10, note=52, velocity=80, time=1),
+  Message('control_change', channel=10, control=2, value=80, time=0),
+  Message('note_on', channel=10, note=52, velocity=0, time=479),
+  Message('note_on', channel=10, note=55, velocity=80, time=1),
+  Message('control_change', channel=10, control=2, value=80, time=0),
+  Message('note_on', channel=10, note=55, velocity=0, time=479),
+  Message('note_on', channel=10, note=52, velocity=80, time=1),
+  Message('control_change', channel=10, control=2, value=80, time=0),
+  Message('note_on', channel=10, note=52, velocity=0, time=479),
+  Message('note_on', channel=10, note=45, velocity=80, time=1),
+  Message('control_change', channel=10, control=2, value=80, time=0),
+  Message('note_on', channel=10, note=45, velocity=0, time=479),
+  Message('note_on', channel=10, note=53, velocity=80, time=1),
+  Message('control_change', channel=10, control=2, value=80, time=0),
+  Message('note_on', channel=10, note=53, velocity=0, time=479),
+  Message('note_on', channel=10, note=52, velocity=80, time=1),
+  Message('control_change', channel=10, control=2, value=80, time=0),
+  Message('note_on', channel=10, note=52, velocity=0, time=479),
+  Message('note_on', channel=10, note=53, velocity=80, time=481),
+  Message('control_change', channel=10, control=2, value=80, time=0),
+  Message('note_on', channel=10, note=53, velocity=0, time=479),
+  Message('note_on', channel=10, note=52, velocity=80, time=1),
+  Message('control_change', channel=10, control=2, value=80, time=0),
+  Message('note_on', channel=10, note=52, velocity=0, time=479),
+  Message('note_on', channel=10, note=50, velocity=80, time=1),
+  Message('control_change', channel=10, control=2, value=80, time=0),
+  Message('note_on', channel=10, note=50, velocity=0, time=479),
+  Message('note_on', channel=10, note=52, velocity=80, time=1),
+  Message('control_change', channel=10, control=2, value=80, time=0),
+  Message('note_on', channel=10, note=52, velocity=0, time=479),
+  Message('note_on', channel=10, note=43, velocity=80, time=1),
+  Message('control_change', channel=10, control=2, value=80, time=0),
+  Message('note_on', channel=10, note=43, velocity=0, time=479),
+  Message('note_on', channel=10, note=47, velocity=80, time=1),
+  Message('control_change', channel=10, control=2, value=80, time=0),
+  Message('note_on', channel=10, note=47, velocity=0, time=479),
+  Message('note_on', channel=10, note=48, velocity=80, time=1),
+  Message('control_change', channel=10, control=2, value=80, time=0),
+  Message('note_on', channel=10, note=48, velocity=0, time=479),
+  MetaMessage('end_of_track', time=1)])
+note_on channel=10 note=48 velocity=80 time=0
+note_on channel=10 note=48 velocity=0 time=479
+note_on channel=10 note=52 velocity=80 time=1
+note_on channel=10 note=52 velocity=0 time=479
+note_on channel=10 note=55 velocity=80 time=1
+note_on channel=10 note=55 velocity=0 time=479
+note_on channel=10 note=52 velocity=80 time=1
+note_on channel=10 note=52 velocity=0 time=479
+note_on channel=10 note=45 velocity=80 time=1
+note_on channel=10 note=45 velocity=0 time=479
+note_on channel=10 note=53 velocity=80 time=1
+note_on channel=10 note=53 velocity=0 time=479
+note_on channel=10 note=52 velocity=80 time=1
+note_on channel=10 note=52 velocity=0 time=479
+note_on channel=10 note=53 velocity=80 time=481
+note_on channel=10 note=53 velocity=0 time=479
+note_on channel=10 note=52 velocity=80 time=1
+note_on channel=10 note=52 velocity=0 time=479
+note_on channel=10 note=50 velocity=80 time=1
+note_on channel=10 note=50 velocity=0 time=479
+note_on channel=10 note=52 velocity=80 time=1
+note_on channel=10 note=52 velocity=0 time=479
+note_on channel=10 note=43 velocity=80 time=1
+note_on channel=10 note=43 velocity=0 time=479
+note_on channel=10 note=47 velocity=80 time=1
+note_on channel=10 note=47 velocity=0 time=479
+note_on channel=10 note=48 velocity=80 time=1
+note_on channel=10 note=48 velocity=0 time=479

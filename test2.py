@@ -2,7 +2,7 @@ from MIDI import MIDIFile
 import os
 
 
-midi = MIDIFile("output.mid")
+midi = MIDIFile("Noshing_just_an_inchident.mid")
 midi.parse()
 os.remove("file.txt")
 f = open("file.txt", "w")

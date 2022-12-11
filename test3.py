@@ -1,14 +1,14 @@
 from mido import MidiFile
 import os
 
-mid = MidiFile('../inputall.mid', clip=True)
+mid = MidiFile('Noshing_just_an_inchident.mid', clip=True)
 print(mid)
 
 #os.remove("file.txt")
-f = open("../file.txt", "w")
+f = open("file.txt", "w")
 
 for track in mid.tracks:
-    print(str(track))
+    #print(str(track))
     f.write(str(track) + "\n")
     for msg in track:
         msg = str(msg)
