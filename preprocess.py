@@ -1,6 +1,8 @@
 import os
 import music21 as m21
 import json
+import tensorflow.keras as keras
+import numpy as np
 
 MIDI_DATASET_PATH = "MIDI/test"
 SAVE_DIR = "dataset"
@@ -153,11 +155,11 @@ def create_single_file_dataset(dataset_path, file_datase_path, sequence_length):
 def create_mapping(pieces, mapping_path):
     mappings = {}
 
-    # 
+    # vytvorit slovnik
     pieces = pieces.split()
     vocabulary = list(set(pieces))
 
-    # vytvoreni mapovani
+    # vytvoreni mapovani pro slovnik
     for i, symbol in enumerate(vocabulary):
         mappings[symbol] = i
 
@@ -165,10 +167,50 @@ def create_mapping(pieces, mapping_path):
     with open(mapping_path, "w") as fp:
         json.dump(mappings, fp, indent=4)
 
+def convert_pieces_to_int(pieces):
+    int_pieces = []
+
+    # nacist soubor s mapovanim
+    with open(MAPPING_PATH, "r") as fp:
+        mappings = json.load(fp)
+
+    # prekonvertovat string skladeb na list
+    pieces = pieces.split()
+
+    # namapovat skladby na integery
+    for symbol in pieces:
+        int_pieces.append(mappings[symbol])
+    
+    return int_pieces
+
+def generate_training_sequences(sequence_length):
+
+
+    # nacist skladby a namapovat je na integery
+    pieces = load(SINGLE_FILE_DATASET)
+    int_pieces = convert_pieces_to_int(pieces)
+
+    # generace trenovaci sekvence
+    # 200 symbolu, koukam dozadu na 64 symbolu, 200 - 64 = 136 pruchodu
+    inputs = []
+    targets = []
+    num_sequences = len(int_pieces) - sequence_length
+    for i in range(num_sequences):
+        inputs.append(int_pieces[i:i+sequence_length])
+        targets.append(int_pieces[i+sequence_length])
+
+    # one-hot kodovani sekvence
+    vocabulary_size = len(set(int_pieces))
+    inputs = keras.utils.to_categorical(inputs, num_classes=vocabulary_size)
+    targets = np.array(targets)
+
+    return inputs, targets
+
 def main():
     preprocess(MIDI_DATASET_PATH)
     pieces = create_single_file_dataset(SAVE_DIR, SINGLE_FILE_DATASET, SEQUENCE_LENGTH)
     create_mapping(pieces, MAPPING_PATH)
+    inputs, targets = generate_training_sequences(SEQUENCE_LENGTH)
 
 if __name__ == "__main__":
     main()
