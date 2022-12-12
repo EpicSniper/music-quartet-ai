@@ -8,7 +8,7 @@ MIDI_DATASET_PATH = "MIDI/test"
 SAVE_DIR = "dataset"
 SINGLE_FILE_DATASET = "file_dataset"
 MAPPING_PATH = "mapping.json"
-SEQUENCE_LENGTH = 64
+SEQUENCE_LENGTH = 20
 
 # durations are expressed in quarter length
 ACCEPTABLE_DURATIONS = [
