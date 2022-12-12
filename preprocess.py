@@ -28,17 +28,33 @@ def load_pieces_in_midi(dataset_path):
     return pieces
 
 def has_acceptable_durations(piece, acceptable_durations):
-    """Boolean routine that returns True if piece has all acceptable duration, False otherwise.
-
-    :param song (m21 stream):
-    :param acceptable_durations (list): List of acceptable duration in quarter length
-    :return (bool):
-    """
     # pridat nasobek 0.25
     for note in piece.flat.notesAndRests:
         if note.duration.quarterLength not in acceptable_durations:
             return False
     return True
+
+def transpose(piece):
+
+    # vycist predznamenani
+    parts = piece.getElementsByClass(m21.stream.Part)
+    measures_part0 = parts[0].getElementsByClass(m21.stream.Measure)
+    key = measures_part0[0][4]
+
+    # odhadnout predznamenani
+    if not isinstance(key, m21.key.Key):
+        key = piece.analyze("key")
+
+    # vypocitat interval pro transpozici
+    if key.mode == "major":
+        interval = m21.interval.Interval(key.tonic, m21.pitch.Pitch("C"))
+    elif key.mode == "minor":
+        interval = m21.interval.Interval(key.tonic, m21.pitch.Pitch("A"))
+
+    # transponovat skladbu podel intervalu
+    transposed_piece = piece.transpose(interval)
+
+    return transposed_piece
 
 def preprocess (dataseyt_path):
 
@@ -47,21 +63,27 @@ def preprocess (dataseyt_path):
     songs = load_pieces_in_midi(dataseyt_path)
     print(f"Loaded {len(pieces)} pieces.")
 
-    # vyfiltrovat skladby, kde jsou trioly, neni 4/4 atd.
+    for piece in pieces:
 
-    # transponovat skladbu do C dur nebo A mol (bez predznamenani)
+        # vyfiltrovat skladby, kde jsou trioly, neni 4/4 atd.
+        if not has_acceptable_durations(piece, ACCEPTABLE_DURATIONS):
+            continue
 
-    # zakodovat skladby do formatu, kteremu bude neuronka rozumnet
+        # transponovat skladbu do C dur nebo A mol (bez predznamenani)
+        piece = transpose(piece)
 
-    # ulozit data skladeb do txt souboru
+        # zakodovat skladby do formatu, kteremu bude neuronka rozumnet
 
-print("yey")
+        # ulozit data skladeb do txt souboru
 
 if __name__ == "__main__":
 
     pieces = load_pieces_in_midi(MIDI_DATASET_PATH)
     print(f"Loaded {len(pieces)} pieces.")
-    piece = pieces[0]
+    piece = pieces[1]
 
     print(f"Has acceptable duration? {has_acceptable_durations(piece, ACCEPTABLE_DURATIONS)}")
-    piece.show()
+
+    transposed_piece = transpose(piece)
+
+    transposed_piece.show()
