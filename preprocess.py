@@ -1,9 +1,11 @@
 import os
 import music21 as m21
+import json
 
 MIDI_DATASET_PATH = "MIDI/test"
 SAVE_DIR = "dataset"
 SINGLE_FILE_DATASET = "file_dataset"
+MAPPING_PATH = "mapping.json"
 SEQUENCE_LENGTH = 64
 
 # durations are expressed in quarter length
@@ -148,7 +150,25 @@ def create_single_file_dataset(dataset_path, file_datase_path, sequence_length):
 
     return pieces
 
+def create_mapping(pieces, mapping_path):
+    mappings = {}
 
-if __name__ == "__main__":
+    # 
+    pieces = pieces.split()
+    vocabulary = list(set(pieces))
+
+    # vytvoreni mapovani
+    for i, symbol in enumerate(vocabulary):
+        mappings[symbol] = i
+
+    # ulozeni json souboru za ucelem mapovani
+    with open(mapping_path, "w") as fp:
+        json.dump(mappings, fp, indent=4)
+
+def main():
     preprocess(MIDI_DATASET_PATH)
     pieces = create_single_file_dataset(SAVE_DIR, SINGLE_FILE_DATASET, SEQUENCE_LENGTH)
+    create_mapping(pieces, MAPPING_PATH)
+
+if __name__ == "__main__":
+    main()
