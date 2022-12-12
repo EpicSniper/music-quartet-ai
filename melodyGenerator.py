@@ -1,6 +1,7 @@
 import json
 import tensorflow.keras as keras
 import numpy as np
+import music21 as m21
 from preprocess import SEQUENCE_LENGTH, MAPPING_PATH
 
 class PieceGenerator:
@@ -65,8 +66,47 @@ class PieceGenerator:
 
         return index
 
+    def save_piece(self, piece, step_duration=0.25, format="midi", filename="mastrpic.mid"):
+
+        # vytvorit music21 stream
+        stream = m21.stream.Stream()
+
+        # dekodovat noty a pomlky
+        start_symbol = None
+        step_counter = 1
+
+        for i, symbol in enumerate(piece):
+            # symbol noty nebo pomlky
+            if symbol != "_" or i + 1 == len(piece):
+                
+                if start_symbol is not None:
+                    duration = step_duration * step_counter     # 0.25 * 4 = 1 -> ctvrtova nota
+
+                    # symbol je pomlka
+                    if start_symbol == "r":
+                        m21_event = m21.note.Rest(quaterLength=duration)
+
+                    # symbol je nota
+                    else:
+                        m21_event = m21.note.Note(int(start_symbol), quaterLength=duration)
+
+                    stream.append(m21_event)
+
+                    # resetovat pocitadlo delky a vymenit notu/pomlku
+                    step_counter = 1
+
+                start_symbol = symbol
+
+            # symbol prodlouzeni
+            else:
+                step_counter += 1
+
+        # zapsat dekodovanou skladbu do midi
+        stream.write(format, filename)
+
 if __name__ == "__main__":
     mg = PieceGenerator()
     seed = "55 _ _ _ 60 _ _ _ 55 _ _ _ 55 _"
-    piece = mg.generate_piece(seed, 500, SEQUENCE_LENGTH, 0.7)
+    piece = mg.generate_piece(seed, 500, SEQUENCE_LENGTH, 0.1)
     print(piece)
+    mg.save_piece(piece)
