@@ -3,6 +3,8 @@ import music21 as m21
 
 MIDI_DATASET_PATH = "MIDI/test"
 SAVE_DIR = "dataset"
+SINGLE_FILE_DATASET = "file_dataset"
+SEQUENCE_LENGTH = 64
 
 # durations are expressed in quarter length
 ACCEPTABLE_DURATIONS = [
@@ -64,7 +66,7 @@ def preprocess (dataseyt_path):
 
     # nahrat vsechny skladby
     print("Loading pieces...")
-    songs = load_pieces_in_midi(dataseyt_path)
+    pieces = load_pieces_in_midi(dataseyt_path)
     print(f"Loaded {len(pieces)} pieces.")
 
     for i, piece in enumerate(pieces):
@@ -86,7 +88,7 @@ def preprocess (dataseyt_path):
 
 def encode_piece(piece, time_step=0.25):
     # pitch = 60, duration = 1 -> [60, "_", "_", "_"]
-    # TODO: pro vice stop
+    # TODO: upravit pro vice stop, ted to dava noty za sebou bez ohledu na to, v jakem partu to je
 
     encoded_piece = []
 
@@ -120,14 +122,33 @@ def encode_piece(piece, time_step=0.25):
 
     return encoded_piece
 
+def load(file_path):
+    with open(file_path, "r") as fp:
+        piece = fp.read()
+
+    return piece
+
+def create_single_file_dataset(dataset_path, file_datase_path, sequence_length):
+
+    new_piece_delimiter = "/ " * sequence_length
+    pieces = ""
+
+    # nacist zakodovane skladby a pridat delimitery
+    for path, _, files in os.walk(dataset_path):
+        for file in files:
+            file_path = os.path.join(path, file)
+            piece = load(file_path)
+            pieces = pieces + piece + " " + new_piece_delimiter
+    
+    pieces = pieces[:-1]
+
+    # ulozit string, kde jsou vsechny datasety
+    with open(file_datase_path, "w") as fp:
+        fp.write(pieces)
+
+    return pieces
+
 
 if __name__ == "__main__":
-
-    pieces = load_pieces_in_midi(MIDI_DATASET_PATH)
-    print(f"Loaded {len(pieces)} pieces.")
-    piece = pieces[1]
-
     preprocess(MIDI_DATASET_PATH)
-
-    transposed_piece = transpose(piece)
-    #transposed_piece.show()
+    pieces = create_single_file_dataset(SAVE_DIR, SINGLE_FILE_DATASET, SEQUENCE_LENGTH)
