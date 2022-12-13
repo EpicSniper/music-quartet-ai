@@ -88,7 +88,6 @@ def encode_piece(piece, time_step=MIN_ACCEPTABLE_DURATION):
     parts = []
     encoded_parts = []
     for part in piece:
-        print(part)
         if isinstance(part, m21.stream.Part):
             parts.append(part)
 

@@ -2,7 +2,8 @@ import json
 import tensorflow.keras as keras
 import numpy as np
 import music21 as m21
-from preprocess import SEQUENCE_LENGTH, MAPPING_PATH
+from music21 import instrument as inst
+from preprocess import SEQUENCE_LENGTH, MAPPING_PATH, MIN_ACCEPTABLE_DURATION
 
 class PieceGenerator:
 
@@ -66,47 +67,74 @@ class PieceGenerator:
 
         return index
 
-    def save_piece(self, piece, step_duration=0.25, format="midi", filename="mastrpic.mid"):
+    def save_piece(self, piece, step_duration=MIN_ACCEPTABLE_DURATION, format="midi", filename="mastrpic.mid"):
 
         # vytvorit music21 stream
-        stream = m21.stream.Stream()
+        stream = m21.stream.Score()
 
         # dekodovat noty a pomlky
-        start_symbol = None
-        step_counter = 1
+        
+        parts_symbols = []
+        parts_symbols.append([])
+        parts_symbols.append([])
+        parts_symbols.append([])
+        parts_symbols.append([])
+        
+        num_parts = len(parts_symbols)
+        part_instrument = [inst.Violin(), inst.Violin(), inst.Viola(), inst.Violoncello()]
+        
+        # TODO: rozdelit party, aby nasledujici cyklus jel pro kazdy part zvlast
 
         for i, symbol in enumerate(piece):
-            # symbol noty nebo pomlky
-            if symbol != "_" or i + 1 == len(piece):
-                
-                if start_symbol is not None:
-                    duration = step_duration * step_counter     # 0.25 * 4 = 1 -> ctvrtova nota
-
-                    # symbol je pomlka
-                    if start_symbol == "r":
-                        m21_event = m21.note.Rest(quaterLength=duration)
-
-                    # symbol je nota
-                    else:
-                        m21_event = m21.note.Note(int(start_symbol), quaterLength=duration)
-
-                    stream.append(m21_event)
-
-                    # resetovat pocitadlo delky a vymenit notu/pomlku
-                    step_counter = 1
-
-                start_symbol = symbol
-
-            # symbol prodlouzeni
-            else:
-                step_counter += 1
-
+            parts_symbols[(i%num_parts)].append(piece[i])
+        
+        print(parts_symbols)
+        for i, part_symbols in enumerate(parts_symbols):
+            part = convert_part_to_music21(parts_symbols[i], part_instrument[i], step_duration)
+            stream.insert(part)
+        
         # zapsat dekodovanou skladbu do midi
         stream.write(format, filename)
 
+        
+def convert_part_to_music21(part_symbols, instrument, step_duration):
+    start_symbol = None
+    step_counter = 1
+    stream = m21.stream.Stream()
+    stream.append(instrument)
+    for i, symbol in enumerate(part_symbols):
+        # symbol noty nebo pomlky
+        if symbol != "_" or i + 1 == len(part_symbols):
+            
+            if start_symbol is not None:
+                duration = step_duration * step_counter     # 0.25 * 4 = 1 -> ctvrtova nota
+
+                # symbol je pomlka
+                if start_symbol == "r":
+                    m21_event = m21.note.Rest(quaterLength=duration)
+
+                # symbol je nota
+                else:
+                    m21_event = m21.note.Note(int(start_symbol), quaterLength=duration)
+
+                stream.append(m21_event)
+
+                # resetovat pocitadlo delky a vymenit notu/pomlku
+                step_counter = 1
+
+            start_symbol = symbol
+
+        # symbol prodlouzeni
+        else:
+            step_counter += 1
+    return stream
+
 if __name__ == "__main__":
     mg = PieceGenerator()
-    seed = "55 _ _ _ 60 _ _ _ 55 _ _ _ 55 _"
-    piece = mg.generate_piece(seed, 500, SEQUENCE_LENGTH, 0.1)
+    seed = "55 55 60 50 _ _ _ _ _ _ _ _ _ _"
+    #piece = mg.generate_piece(seed, 500, SEQUENCE_LENGTH, 0.1)
+    piece = ['55', '55', '60', '50', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '60', '55', '52', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '67', '55', '48', '55', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '67', '60', '_', '52', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '69', '64', '60', '45', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '69', '65', '_', '53', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '67', '64', '60', '52', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', 'r', 'r', 'r', 'r', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '65', '62', '59', '53', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '65', '62', '_', '52', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '64', '60', '60', '50', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '64', '60', '_', '52', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '67', '55', '60', '43', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '69', '65', '_', '52', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '67', '64', '60', '50', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', 'r', '60', '_', '52', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '67', '55', '48', '55', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '67', '60', '_', '52', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '69', '64', '60', '45', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '69', '65', '_', '53', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '67', '64', '60', '52', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', 'r', 'r', 'r', 'r', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_']
+    piece = ['55', '55', '60', '50', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '60', '55', '52', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_']
     print(piece)
+    print(len(piece))
     mg.save_piece(piece)
