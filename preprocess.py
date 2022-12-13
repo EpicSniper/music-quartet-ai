@@ -171,7 +171,7 @@ def create_dataset_files(dataset_path, file_datase_path, sequence_length):
             piece_counter = piece_counter + 1
             if piece_counter == 10:
                 dataset_part = dataset_part[:-1]
-                if (dataset_counter = 0):
+                if (dataset_counter == 0):
                     part0 = dataset_part
                 with open(DATASET_PART_PATH + "/file_dataset_part" + str(dataset_counter), "w") as fp:
                     fp.write(dataset_part)
@@ -226,7 +226,7 @@ def generate_training_sequences(sequence_length, file_dataset):
 
 
     # nacist skladby a namapovat je na integery
-    pieces = load(SINGLE_FILE_DATASET)
+    pieces = load(file_dataset)
     int_pieces = convert_pieces_to_int(pieces)
 
     # generace trenovaci sekvence
