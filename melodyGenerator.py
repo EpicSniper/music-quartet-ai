@@ -95,6 +95,7 @@ class PieceGenerator:
         
         # zapsat dekodovanou skladbu do midi
         stream.write(format, filename)
+        return stream
 
         
 def convert_part_to_music21(part_symbols, instrument, step_duration):
@@ -131,8 +132,9 @@ def convert_part_to_music21(part_symbols, instrument, step_duration):
 
 if __name__ == "__main__":
     mg = PieceGenerator()
-    seed = "60 55 48 48 _ _ _ _ _ _ _ _ _ _ _ _ 60 55 _ 52 _ _ _ _ _ _ _ _ _ _ _ _ 67 55 48 55 _ _ _ _ _ _ _ _ _ _ _ _ 67 60 _ 52 _ _ _ _ _ _ _ _ _ _ _ _ "
+    seed = "67 55 48 55 _ _ _ _ _ _ _ _ _ _ _ _ 67 60 _ 52 _ _ _ _ _ _ _ _ _ _ _ _ "
     piece = mg.generate_piece(seed, 500, SEQUENCE_LENGTH, 0.1)
     print(piece)
     print(len(piece))
-    mg.save_piece(piece)
+    stream = mg.save_piece(piece)
+    stream.show()

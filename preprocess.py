@@ -4,7 +4,7 @@ import json
 import tensorflow.keras as keras
 import numpy as np
 
-MIDI_DATASET_PATH = "MIDI/test"
+MIDI_DATASET_PATH = "MIDI/training_sample"
 SAVE_DIR = "dataset"
 SINGLE_FILE_DATASET = "file_dataset"
 MAPPING_PATH = "mapping.json"
@@ -21,6 +21,7 @@ def load_pieces_in_midi(dataset_path):
     for path, subdirs, files in os.walk(dataset_path):
         for file in files:
             if file[-3:] == "mid":
+                print(file)
                 piece = m21.converter.parse(os.path.join(path, file))
                 pieces.append(piece)
     return pieces
