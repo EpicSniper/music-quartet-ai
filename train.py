@@ -3,7 +3,7 @@ import tensorflow.keras as keras
 import json
 
 OUTPUT_UNITS = len(json.load(open("mapping.json", "r")))
-NUM_UNITS = [256, 256]           # [256, 256]
+NUM_UNITS = [256]           # [256, 256]
 LOSS = "sparse_categorical_crossentropy"
 LEARNING_RATE = 0.001
 EPOCHS = 50                 # 40 az 100
