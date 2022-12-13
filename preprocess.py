@@ -8,7 +8,7 @@ MIDI_DATASET_PATH = "MIDI/test"
 SAVE_DIR = "dataset"
 SINGLE_FILE_DATASET = "file_dataset"
 MAPPING_PATH = "mapping.json"
-SEQUENCE_LENGTH = 20
+SEQUENCE_LENGTH = 64
 
 # delka je v hodnotach ctvrtinove noty (ctvrtova nota = 1, cela nota = 4)
 MIN_ACCEPTABLE_DURATION = 1/4
