@@ -8,7 +8,7 @@ MIDI_DATASET_PATH = "MIDI/training_sample"
 SAVE_DIR = "dataset"
 SINGLE_FILE_DATASET = "file_dataset"
 MAPPING_PATH = "mapping.json"
-SEQUENCE_LENGTH = 32
+SEQUENCE_LENGTH = 192
 DATASET_PART_PATH = "file_dataset_parts"
 
 # delka je v hodnotach ctvrtinove noty (ctvrtova nota = 1, cela nota = 4)
@@ -79,7 +79,7 @@ def preprocess (dataset_path):
         encoded_piece = encode_piece(piece)
 
         # ulozit data skladeb do souboru
-        save_path = os.path.join(SAVE_DIR, str(i) + "-288")
+        save_path = os.path.join(SAVE_DIR, str(i) + "-192")
         with open(save_path, "w") as fp:
             fp.write(encoded_piece)
 
@@ -169,7 +169,7 @@ def create_dataset_files(dataset_path, file_datase_path, sequence_length):
 
             dataset_part = dataset_part + piece + " " + new_piece_delimiter
             piece_counter = piece_counter + 1
-            if piece_counter == 10:
+            if piece_counter == 5:
                 dataset_part = dataset_part[:-1]
                 if (dataset_counter == 0):
                     part0 = dataset_part
@@ -261,7 +261,7 @@ def add_mapping_to_end():
                 fp.write(append_part)
 
 def main():
-    #preprocess(MIDI_DATASET_PATH)
+    preprocess(MIDI_DATASET_PATH)
     pieces = create_dataset_files(SAVE_DIR, SINGLE_FILE_DATASET, SEQUENCE_LENGTH)
     create_mapping(pieces, MAPPING_PATH)
     add_mapping_to_end()
