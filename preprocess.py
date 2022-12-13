@@ -8,7 +8,7 @@ MIDI_DATASET_PATH = "MIDI/training_sample"
 SAVE_DIR = "dataset"
 SINGLE_FILE_DATASET = "file_dataset"
 MAPPING_PATH = "mapping.json"
-SEQUENCE_LENGTH = 288
+SEQUENCE_LENGTH = 32
 DATASET_PART_PATH = "file_dataset_parts"
 
 # delka je v hodnotach ctvrtinove noty (ctvrtova nota = 1, cela nota = 4)
@@ -181,6 +181,7 @@ def create_dataset_files(dataset_path, file_datase_path, sequence_length):
                 piece_counter = 0
     
     pieces = pieces[:-1]
+    dataset_part = dataset_part[:-1]
 
     # ulozit string, kde jsou vsechny datasety
     with open(DATASET_PART_PATH + "/file_dataset_part" + str(dataset_counter), "w") as fp:
@@ -189,7 +190,7 @@ def create_dataset_files(dataset_path, file_datase_path, sequence_length):
     with open(file_datase_path, "w") as fp:
         fp.write(pieces)
 
-    return part0
+    return pieces
 
 def create_mapping(pieces, mapping_path):
     mappings = {}
@@ -239,16 +240,31 @@ def generate_training_sequences(sequence_length, file_dataset):
         targets.append(int_pieces[i+sequence_length])
 
     # one-hot kodovani sekvence
-    vocabulary_size = len(set(int_pieces))
-    inputs = keras.utils.to_categorical(inputs, num_classes=vocabulary_size)
+    vocabulary_size = len(set(int_pieces)) + 1
+
+    inputs = keras.utils.to_categorical(inputs, num_classes=vocabulary_size, dtype='float64')
     targets = np.array(targets)
 
     return inputs, targets
+
+def add_mapping_to_end():
+    append_part = " "
+    with open(MAPPING_PATH, "r") as fp:
+        mappings = json.load(fp)
+    
+    for word in mappings:
+        append_part = append_part + " " + word
+    
+    for path, subdirs, files in os.walk(DATASET_PART_PATH):
+        for file in files:
+            with (open(path + "/" + file, "a")) as fp:
+                fp.write(append_part)
 
 def main():
     #preprocess(MIDI_DATASET_PATH)
     pieces = create_dataset_files(SAVE_DIR, SINGLE_FILE_DATASET, SEQUENCE_LENGTH)
     create_mapping(pieces, MAPPING_PATH)
+    add_mapping_to_end()
 
 if __name__ == "__main__":
     main()
