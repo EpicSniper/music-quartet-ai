@@ -1,6 +1,7 @@
-from preprocess import generate_training_sequences, SEQUENCE_LENGTH, SEQUENCE_LENGTH
+from preprocess import generate_training_sequences, SEQUENCE_LENGTH, DATASET_PART_PATH
 import tensorflow.keras as keras
 import json
+import os
 
 OUTPUT_UNITS = len(json.load(open("mapping.json", "r")))
 NUM_UNITS = [256]           # [256, 256]
@@ -9,7 +10,6 @@ LEARNING_RATE = 0.001
 EPOCHS = 50                 # 40 az 100
 BATCH_SIZE = SEQUENCE_LENGTH
 SAVE_MODEL_PATH = "model.h5"
-
 
 
 def build_model(output_units, num_units, loss, learning_rate):
@@ -31,13 +31,15 @@ def build_model(output_units, num_units, loss, learning_rate):
     return model
 
 
-def train(output_units=OUTPUT_UNITS, num_units=NUM_UNITS, loss=LOSS, learning_rate=LEARNING_RATE):
+def train(dataset_file, output_units=OUTPUT_UNITS, num_units=NUM_UNITS, loss=LOSS, learning_rate=LEARNING_RATE):
     
+    print(dataset_file)
     # generace treninkovych sekvenci
-    inputs,targets = generate_training_sequences(SEQUENCE_LENGTH)
+    inputs, targets = generate_training_sequences(SEQUENCE_LENGTH, dataset_file)
 
     # sestavit sit
     model = build_model(output_units, num_units, loss, learning_rate)
+    #model = keras.models.load_model("model.h5")
 
     # trenovani modelu
     model.fit(inputs, targets, epochs=EPOCHS, batch_size=BATCH_SIZE)
@@ -47,4 +49,6 @@ def train(output_units=OUTPUT_UNITS, num_units=NUM_UNITS, loss=LOSS, learning_ra
 
 
 if __name__ == "__main__":
-    train()
+    for path, subdirs, files in os.walk(DATASET_PART_PATH):
+        for file in files:
+            train(os.path.join(path, file))

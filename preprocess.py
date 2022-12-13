@@ -9,6 +9,7 @@ SAVE_DIR = "dataset"
 SINGLE_FILE_DATASET = "file_dataset"
 MAPPING_PATH = "mapping.json"
 SEQUENCE_LENGTH = 288
+DATASET_PART_PATH = "file_dataset_parts"
 
 # delka je v hodnotach ctvrtinove noty (ctvrtova nota = 1, cela nota = 4)
 MIN_ACCEPTABLE_DURATION = 1/12
@@ -151,24 +152,37 @@ def load(file_path):
 
     return piece
 
-def create_single_file_dataset(dataset_path, file_datase_path, sequence_length):
+def create_dataset_files(dataset_path, file_datase_path, sequence_length):
 
     new_piece_delimiter = "/ " * sequence_length
     pieces = ""
-    i = 0
+    piece_counter = 0
+    dataset_counter = 0
+    dataset_part = ""
     # nacist zakodovane skladby a pridat delimitery
     for path, _, files in os.walk(dataset_path):
         for file in files:
-            i = i + 1
             file_path = os.path.join(path, file)
             piece = load(file_path)
             pieces = pieces + piece + " " + new_piece_delimiter
-            if i == 2:
-                break
+
+            dataset_part = dataset_part + piece + " " + new_piece_delimiter
+            piece_counter = piece_counter + 1
+            if piece_counter == 10:
+                dataset_part = dataset_part[:-1]
+                with open(DATASET_PART_PATH + "/file_dataset_part" + str(dataset_counter), "w") as fp:
+                    fp.write(dataset_part)
+                    dataset_part = ""
+                
+                dataset_counter = dataset_counter + 1
+                piece_counter = 0
     
     pieces = pieces[:-1]
 
     # ulozit string, kde jsou vsechny datasety
+    with open(DATASET_PART_PATH + "/file_dataset_part" + str(dataset_counter), "w") as fp:
+        fp.write(dataset_part)
+
     with open(file_datase_path, "w") as fp:
         fp.write(pieces)
 
@@ -205,7 +219,7 @@ def convert_pieces_to_int(pieces):
     
     return int_pieces
 
-def generate_training_sequences(sequence_length):
+def generate_training_sequences(sequence_length, file_dataset):
 
 
     # nacist skladby a namapovat je na integery
@@ -230,7 +244,7 @@ def generate_training_sequences(sequence_length):
 
 def main():
     #preprocess(MIDI_DATASET_PATH)
-    pieces = create_single_file_dataset(SAVE_DIR, SINGLE_FILE_DATASET, SEQUENCE_LENGTH)
+    pieces = create_dataset_files(SAVE_DIR, SINGLE_FILE_DATASET, SEQUENCE_LENGTH)
     create_mapping(pieces, MAPPING_PATH)
 
 if __name__ == "__main__":
