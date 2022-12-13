@@ -1,4 +1,4 @@
-from preprocess import generate_training_sequences, SEQUENCE_LENGTH
+from preprocess import generate_training_sequences, SEQUENCE_LENGTH, SEQUENCE_LENGTH
 import tensorflow.keras as keras
 
 OUTPUT_UNITS = 19
@@ -6,7 +6,7 @@ NUM_UNITS = [256]           # [256, 256]
 LOSS = "sparse_categorical_crossentropy"
 LEARNING_RATE = 0.001
 EPOCHS = 50                 # 40 az 100
-BATCH_SIZE = 20
+BATCH_SIZE = SEQUENCE_LENGTH
 SAVE_MODEL_PATH = "model.h5"
 
 
