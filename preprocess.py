@@ -159,6 +159,7 @@ def create_dataset_files(dataset_path, file_datase_path, sequence_length):
     piece_counter = 0
     dataset_counter = 0
     dataset_part = ""
+    part0 = ""
     # nacist zakodovane skladby a pridat delimitery
     for path, _, files in os.walk(dataset_path):
         for file in files:
@@ -170,6 +171,8 @@ def create_dataset_files(dataset_path, file_datase_path, sequence_length):
             piece_counter = piece_counter + 1
             if piece_counter == 10:
                 dataset_part = dataset_part[:-1]
+                if (dataset_counter = 0):
+                    part0 = dataset_part
                 with open(DATASET_PART_PATH + "/file_dataset_part" + str(dataset_counter), "w") as fp:
                     fp.write(dataset_part)
                     dataset_part = ""
@@ -186,7 +189,7 @@ def create_dataset_files(dataset_path, file_datase_path, sequence_length):
     with open(file_datase_path, "w") as fp:
         fp.write(pieces)
 
-    return pieces
+    return part0
 
 def create_mapping(pieces, mapping_path):
     mappings = {}

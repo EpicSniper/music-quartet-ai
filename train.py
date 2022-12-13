@@ -33,7 +33,6 @@ def build_model(output_units, num_units, loss, learning_rate):
 
 def train(dataset_file, output_units=OUTPUT_UNITS, num_units=NUM_UNITS, loss=LOSS, learning_rate=LEARNING_RATE):
     
-    print(dataset_file)
     # generace treninkovych sekvenci
     inputs, targets = generate_training_sequences(SEQUENCE_LENGTH, dataset_file)
 
