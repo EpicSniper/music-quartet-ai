@@ -8,11 +8,11 @@ MIDI_DATASET_PATH = "MIDI/training_sample"
 SAVE_DIR = "dataset"
 SINGLE_FILE_DATASET = "file_dataset"
 MAPPING_PATH = "mapping.json"
-SEQUENCE_LENGTH = 192
+SEQUENCE_LENGTH = 128
 DATASET_PART_PATH = "file_dataset_parts"
 
 # delka je v hodnotach ctvrtinove noty (ctvrtova nota = 1, cela nota = 4)
-MIN_ACCEPTABLE_DURATION = 1/12
+MIN_ACCEPTABLE_DURATION = 1/4
 
 def load_pieces_in_midi(dataset_path):
 
@@ -79,7 +79,7 @@ def preprocess (dataset_path):
         encoded_piece = encode_piece(piece)
 
         # ulozit data skladeb do souboru
-        save_path = os.path.join(SAVE_DIR, str(i) + "-192")
+        save_path = os.path.join(SAVE_DIR, str(i) + "-128")
         with open(save_path, "w") as fp:
             fp.write(encoded_piece)
 

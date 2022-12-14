@@ -3,12 +3,12 @@ import tensorflow.keras as keras
 import json
 import os
 
-OUTPUT_UNITS = 85#len(json.load(open("mapping.json", "r")))
+OUTPUT_UNITS = 84#len(json.load(open("mapping.json", "r")))
 NUM_UNITS = [256]           # [256, 256]
 LOSS = "sparse_categorical_crossentropy"
 LEARNING_RATE = 0.001
 EPOCHS = 50                 # 40 az 100
-BATCH_SIZE = 64
+BATCH_SIZE = 128
 SAVE_MODEL_PATH = "model.h5"
 
 
