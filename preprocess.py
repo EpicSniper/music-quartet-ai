@@ -4,7 +4,7 @@ import json
 import tensorflow.keras as keras
 import numpy as np
 
-MIDI_DATASET_PATH = "MIDI/test"
+MIDI_DATASET_PATH = "MIDI/training_sample"
 SAVE_DIR = "dataset"
 SINGLE_FILE_DATASET = "file_dataset"
 MAPPING_PATH = "mapping.json"
