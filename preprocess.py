@@ -4,7 +4,7 @@ import json
 import tensorflow.keras as keras
 import numpy as np
 
-MIDI_DATASET_PATH = "MIDI/training_sample"
+MIDI_DATASET_PATH = "MIDI/test"
 SAVE_DIR = "dataset"
 SINGLE_FILE_DATASET = "file_dataset"
 MAPPING_PATH = "mapping.json"
@@ -262,7 +262,7 @@ def add_mapping_to_end():
 
 def main():
     preprocess(MIDI_DATASET_PATH)
-    pieces = create_dataset_files(SAVE_DIR, SINGLE_FILE_DATASET, SEQUENCE_LENGTH)
+    pieces = create_dataset_files(SAVE_DIR, "file_seed", SEQUENCE_LENGTH)
     create_mapping(pieces, MAPPING_PATH)
     add_mapping_to_end()
 
