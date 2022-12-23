@@ -8,11 +8,11 @@ MIDI_DATASET_PATH = "MIDI/training_sample"
 SAVE_DIR = "dataset"
 SINGLE_FILE_DATASET = "file_dataset"
 MAPPING_PATH = "mapping.json"
-SEQUENCE_LENGTH = 128
+SEQUENCE_LENGTH = 1536
 DATASET_PART_PATH = "file_dataset_parts"
 
 # delka je v hodnotach ctvrtinove noty (ctvrtova nota = 1, cela nota = 4)
-MIN_ACCEPTABLE_DURATION = 1/4
+MIN_ACCEPTABLE_DURATION = 1/12
 
 def load_pieces_in_midi(dataset_path):
 
@@ -20,17 +20,19 @@ def load_pieces_in_midi(dataset_path):
     
     # projit vsechny cesty a nahrat mid soubory
     for path, subdirs, files in os.walk(dataset_path):
-        for file in files:
+        for i, file in enumerate(files):
             if file[-3:] == "mid":
-                print(file)
+                print(str(i) + " - " + file)
                 piece = m21.converter.parse(os.path.join(path, file))
                 pieces.append(piece)
     return pieces
 
 def has_acceptable_durations(piece, min_acceptable_duration):
     for note in piece.flat.notesAndRests:
-        if ((note.duration.quarterLength % min_acceptable_duration) > 0.001):
+        if (((note.duration.quarterLength + 0.0000000001) % min_acceptable_duration) > 0.000001):
             print(note.duration.quarterLength)
+            print(note.duration.quarterLength % min_acceptable_duration)
+            print(int (note.duration.quarterLength / min_acceptable_duration))
             return False
     return True
 
@@ -70,6 +72,7 @@ def preprocess (dataset_path):
 
         # vyfiltrovat skladby, kde jsou trioly, neni 4/4 atd.
         if not has_acceptable_durations(piece, MIN_ACCEPTABLE_DURATION):
+            print(i)
             continue
 
         # transponovat skladbu do C dur nebo A mol (bez predznamenani)
@@ -79,7 +82,7 @@ def preprocess (dataset_path):
         encoded_piece = encode_piece(piece)
 
         # ulozit data skladeb do souboru
-        save_path = os.path.join(SAVE_DIR, str(i) + "-128")
+        save_path = os.path.join(SAVE_DIR, str(i) + "-12")
         with open(save_path, "w") as fp:
             fp.write(encoded_piece)
 
