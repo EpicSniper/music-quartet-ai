@@ -1,14 +1,15 @@
 from preprocess import generate_training_sequences, SEQUENCE_LENGTH, DATASET_PART_PATH
+from mapping import MAPPING_PATH
 import tensorflow.keras as keras
 import json
 import os
 
-OUTPUT_UNITS = 84#len(json.load(open("mapping.json", "r")))
-NUM_UNITS = [256]           # [256, 256]
+OUTPUT_UNITS = len(json.load(open(MAPPING_PATH, "r")))
+NUM_UNITS = [256, 256]           # [256] [256, 256, 256, 256]
 LOSS = "sparse_categorical_crossentropy"
 LEARNING_RATE = 0.001
-EPOCHS = 50                 # 40 az 100
-BATCH_SIZE = 128
+EPOCHS = 100                 # 40 - 100
+BATCH_SIZE = 64
 SAVE_MODEL_PATH = "model.h5"
 
 
@@ -38,7 +39,7 @@ def train(dataset_file, output_units=OUTPUT_UNITS, num_units=NUM_UNITS, loss=LOS
 
     # sestavit sit
     if os.path.exists(SAVE_MODEL_PATH):
-        model = keras.models.load_model("model.h5")
+        model = keras.models.load_model(SAVE_MODEL_PATH)
     else:
         model = build_model(output_units, num_units, loss, learning_rate)
     

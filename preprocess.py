@@ -3,11 +3,11 @@ import music21 as m21
 import json
 import tensorflow.keras as keras
 import numpy as np
+from mapping import MAPPING_PATH, SYMBOL_REST, SYMBOL_END_OF_PIECEL, SYMBOL_EXTENDER
 
 MIDI_DATASET_PATH = "MIDI/training_sample"
 SAVE_DIR = "dataset"
 SINGLE_FILE_DATASET = "file_dataset"
-MAPPING_PATH = "mapping.json"
 SEQUENCE_LENGTH = 1536
 DATASET_PART_PATH = "file_dataset_parts"
 
@@ -107,7 +107,7 @@ def encode_piece(piece, time_step=MIN_ACCEPTABLE_DURATION):
 
             # zpracovani pomlk
             if isinstance(event, m21.note.Rest):
-                symbol = "r"
+                symbol = SYMBOL_REST
             
             if isinstance(event, m21.chord.Chord):
                 # TODO: implementovat dvojhmaty/akordy
@@ -120,7 +120,7 @@ def encode_piece(piece, time_step=MIN_ACCEPTABLE_DURATION):
                 if step == 0:
                     encoded_part.append(symbol)
                 else:
-                    encoded_part.append("_")
+                    encoded_part.append(SYMBOL_EXTENDER)
         
         encoded_parts.append(encoded_part)
     
@@ -136,10 +136,10 @@ def encode_piece(piece, time_step=MIN_ACCEPTABLE_DURATION):
         while (part_length) < max_part_length[0]:
             if part_length % (4 / MIN_ACCEPTABLE_DURATION) == 0:
                 part_length = part_length + 1
-                part.append("r")
+                part.append(SYMBOL_REST)
             
             part_length = part_length + 1
-            part.append("_")
+            part.append(SYMBOL_EXTENDER)
             
     for i, _ in enumerate(max_part_length[1]):
         for part in encoded_parts:
@@ -157,7 +157,7 @@ def load(file_path):
 
 def create_dataset_files(dataset_path, file_datase_path, sequence_length):
 
-    new_piece_delimiter = "/ " * sequence_length
+    new_piece_delimiter = SYMBOL_END_OF_PIECEL + " " * sequence_length
     pieces = ""
     piece_counter = 0
     dataset_counter = 0
