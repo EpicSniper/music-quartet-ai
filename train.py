@@ -1,4 +1,4 @@
-from preprocess import generate_training_sequences, SEQUENCE_LENGTH, DATASET_PART_PATH
+from preprocess import generate_training_sequences, SEQUENCE_LENGTH, DATASET_PART_PATH, MIN_ACCEPTABLE_DURATION, NAME_SUFFIX
 from mapping import MAPPING_PATH
 import tensorflow.keras as keras
 import json
@@ -9,8 +9,8 @@ NUM_UNITS = [256, 256]           # [256] [256, 256, 256, 256]
 LOSS = "sparse_categorical_crossentropy"
 LEARNING_RATE = 0.001
 EPOCHS = 100                 # 40 - 100
-BATCH_SIZE = 64
-SAVE_MODEL_PATH = "model.h5"
+BATCH_SIZE = 256
+SAVE_MODEL_PATH = "model-" + str(int(1/MIN_ACCEPTABLE_DURATION)) + "-" + str(SEQUENCE_LENGTH) + ".h5"
 
 
 def build_model(output_units, num_units, loss, learning_rate):
@@ -33,6 +33,7 @@ def build_model(output_units, num_units, loss, learning_rate):
 
 
 def train(dataset_file, output_units=OUTPUT_UNITS, num_units=NUM_UNITS, loss=LOSS, learning_rate=LEARNING_RATE):
+    print(SAVE_MODEL_PATH)
     
     # generace treninkovych sekvenci
     inputs, targets = generate_training_sequences(SEQUENCE_LENGTH, dataset_file)
@@ -55,4 +56,9 @@ def train(dataset_file, output_units=OUTPUT_UNITS, num_units=NUM_UNITS, loss=LOS
 if __name__ == "__main__":
     for path, subdirs, files in os.walk(DATASET_PART_PATH):
         for file in files:
-            train(os.path.join(path, file))
+            if file.endswith(NAME_SUFFIX):
+                train(os.path.join(path, file))
+                # smaze nauceny dataset
+                os.remove(path + "/" + file)
+    print("No dataset part found!")
+            

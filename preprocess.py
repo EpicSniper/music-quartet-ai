@@ -1,19 +1,20 @@
 import os
 import music21 as m21
 import json
+import sys
 import tensorflow.keras as keras
 import numpy as np
 from mapping import MAPPING_PATH, SYMBOL_REST, SYMBOL_END_OF_PIECEL, SYMBOL_EXTENDER
 
-MIDI_DATASET_PATH = "MIDI/traintest"
+MIDI_DATASET_PATH = "MIDI/training_sample"
 SAVE_DIR = "dataset"
 SINGLE_FILE_DATASET = "file_dataset"
-SEQUENCE_LENGTH = 1536
+SEQUENCE_LENGTH = 256
 DATASET_PART_PATH = "file_dataset_parts"
 SYMBOLS_IN_DATASET_PART = 4096
-
 # delka je v hodnotach ctvrtinove noty (ctvrtova nota = 1, cela nota = 4)
-MIN_ACCEPTABLE_DURATION = 1/12
+MIN_ACCEPTABLE_DURATION = 1/4
+NAME_SUFFIX = "-" + str(int(1/MIN_ACCEPTABLE_DURATION)) + "-" + str(SEQUENCE_LENGTH)
 
 def load_pieces_in_midi(dataset_path):
 
@@ -31,9 +32,7 @@ def load_pieces_in_midi(dataset_path):
 def has_acceptable_durations(piece, min_acceptable_duration):
     for note in piece.flat.notesAndRests:
         if (((note.duration.quarterLength + 0.0000000001) % min_acceptable_duration) > 0.000001):
-            print(note.duration.quarterLength)
-            print(note.duration.quarterLength % min_acceptable_duration)
-            print(int (note.duration.quarterLength / min_acceptable_duration))
+            print("Note length not compatible: " + str(note.duration.quarterLength))
             return False
     return True
 
@@ -82,7 +81,7 @@ def preprocess (dataset_path):
         encoded_piece = encode_piece(piece)
 
         # ulozit data skladeb do souboru
-        save_path = os.path.join(SAVE_DIR, str(i) + "-12-1536")
+        save_path = os.path.join(SAVE_DIR, str(i) + NAME_SUFFIX)
         with open(save_path, "w") as fp:
             fp.write(encoded_piece)
 
@@ -162,26 +161,31 @@ def create_dataset_files(dataset_path, file_datase_path, sequence_length):
     # nacist zakodovane skladby a pridat delimitery
     for path, _, files in os.walk(dataset_path):
         for file in files:
-            file_path = os.path.join(path, file)
-            piece = load(file_path)
-            pieces = pieces + piece + " " + new_piece_delimiter
+            if file.endswith(NAME_SUFFIX):
+                file_path = os.path.join(path, file)
+                piece = load(file_path)
+                pieces = pieces + piece + " " + new_piece_delimiter
     
     pieces = pieces[:-1]
+    if pieces != "":
+        # ulozit string, kde jsou vsechny datasety
+        with open(file_datase_path, "w") as fp:
+            fp.write(pieces)
+        
+        list_of_characters = pieces.split(' ')
+        num_dataset_parts = len(list_of_characters) / SYMBOLS_IN_DATASET_PART
+        
+        for i in range(0, int(num_dataset_parts)):
+            last_index = (i + 1) * SYMBOLS_IN_DATASET_PART
+            create_dataset_part(i, last_index, list_of_characters)
+        
+        create_dataset_part(i, len(pieces) - 1, list_of_characters)
 
-    # ulozit string, kde jsou vsechny datasety
-    with open(file_datase_path, "w") as fp:
-        fp.write(pieces)
+        return pieces
     
-    list_of_characters = pieces.split(' ')
-    num_dataset_parts = len(list_of_characters) / SYMBOLS_IN_DATASET_PART
+    print("No data!")
+    sys.exit()
     
-    for i in range(0, int(num_dataset_parts)):
-        last_index = (i + 1) * SYMBOLS_IN_DATASET_PART
-        create_dataset_part(i, last_index, list_of_characters)
-    
-    create_dataset_part(i, len(pieces) - 1, list_of_characters)
-
-    return pieces
 
 def create_dataset_part(i, last_index, list_of_characters):
     first_index = (i * SYMBOLS_IN_DATASET_PART) - SEQUENCE_LENGTH
@@ -189,24 +193,8 @@ def create_dataset_part(i, last_index, list_of_characters):
         first_index = (i * SYMBOLS_IN_DATASET_PART)
         
     dataset_part = " ".join(list_of_characters[first_index:last_index])
-    with open(DATASET_PART_PATH + "/file_dataset_part" + str(i), "w") as fp:
+    with open(DATASET_PART_PATH + "/part-" + str(i) + NAME_SUFFIX, "w") as fp:
         fp.write(dataset_part)
-    
-
-def create_mapping(pieces, mapping_path):
-    mappings = {}
-
-    # vytvorit slovnik
-    pieces = pieces.split()
-    vocabulary = list(set(pieces))
-
-    # vytvoreni mapovani pro slovnik
-    for i, symbol in enumerate(vocabulary):
-        mappings[symbol] = i
-
-    # ulozeni json souboru za ucelem mapovani
-    with open(mapping_path, "w") as fp:
-        json.dump(mappings, fp, indent=4)
 
 def convert_pieces_to_int(pieces):
     int_pieces = []
@@ -225,7 +213,6 @@ def convert_pieces_to_int(pieces):
     return int_pieces
 
 def generate_training_sequences(sequence_length, file_dataset):
-
 
     # nacist skladby a namapovat je na integery
     pieces = load(file_dataset)
@@ -249,7 +236,7 @@ def generate_training_sequences(sequence_length, file_dataset):
     return inputs, targets
 
 def main():
-    #preprocess(MIDI_DATASET_PATH)
+    preprocess(MIDI_DATASET_PATH)
     pieces = create_dataset_files(SAVE_DIR, "dataset_entire", SEQUENCE_LENGTH)
 
 if __name__ == "__main__":
