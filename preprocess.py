@@ -5,11 +5,12 @@ import tensorflow.keras as keras
 import numpy as np
 from mapping import MAPPING_PATH, SYMBOL_REST, SYMBOL_END_OF_PIECEL, SYMBOL_EXTENDER
 
-MIDI_DATASET_PATH = "MIDI/training_sample"
+MIDI_DATASET_PATH = "MIDI/traintest"
 SAVE_DIR = "dataset"
 SINGLE_FILE_DATASET = "file_dataset"
 SEQUENCE_LENGTH = 1536
 DATASET_PART_PATH = "file_dataset_parts"
+SYMBOLS_IN_DATASET_PART = 4096
 
 # delka je v hodnotach ctvrtinove noty (ctvrtova nota = 1, cela nota = 4)
 MIN_ACCEPTABLE_DURATION = 1/12
@@ -72,7 +73,6 @@ def preprocess (dataset_path):
 
         # vyfiltrovat skladby, kde jsou trioly, neni 4/4 atd.
         if not has_acceptable_durations(piece, MIN_ACCEPTABLE_DURATION):
-            print(i)
             continue
 
         # transponovat skladbu do C dur nebo A mol (bez predznamenani)
@@ -82,7 +82,7 @@ def preprocess (dataset_path):
         encoded_piece = encode_piece(piece)
 
         # ulozit data skladeb do souboru
-        save_path = os.path.join(SAVE_DIR, str(i) + "-12")
+        save_path = os.path.join(SAVE_DIR, str(i) + "-12-1536")
         with open(save_path, "w") as fp:
             fp.write(encoded_piece)
 
@@ -157,43 +157,41 @@ def load(file_path):
 
 def create_dataset_files(dataset_path, file_datase_path, sequence_length):
 
-    new_piece_delimiter = SYMBOL_END_OF_PIECEL + " " * sequence_length
+    new_piece_delimiter = (SYMBOL_END_OF_PIECEL + " ") * sequence_length
     pieces = ""
-    piece_counter = 0
-    dataset_counter = 0
-    dataset_part = ""
-    part0 = ""
     # nacist zakodovane skladby a pridat delimitery
     for path, _, files in os.walk(dataset_path):
         for file in files:
             file_path = os.path.join(path, file)
             piece = load(file_path)
             pieces = pieces + piece + " " + new_piece_delimiter
-
-            dataset_part = dataset_part + piece + " " + new_piece_delimiter
-            piece_counter = piece_counter + 1
-            if piece_counter == 5:
-                dataset_part = dataset_part[:-1]
-                if (dataset_counter == 0):
-                    part0 = dataset_part
-                with open(DATASET_PART_PATH + "/file_dataset_part" + str(dataset_counter), "w") as fp:
-                    fp.write(dataset_part)
-                    dataset_part = ""
-                
-                dataset_counter = dataset_counter + 1
-                piece_counter = 0
     
     pieces = pieces[:-1]
-    dataset_part = dataset_part[:-1]
 
     # ulozit string, kde jsou vsechny datasety
-    with open(DATASET_PART_PATH + "/file_dataset_part" + str(dataset_counter), "w") as fp:
-        fp.write(dataset_part)
-
     with open(file_datase_path, "w") as fp:
         fp.write(pieces)
+    
+    list_of_characters = pieces.split(' ')
+    num_dataset_parts = len(list_of_characters) / SYMBOLS_IN_DATASET_PART
+    
+    for i in range(0, int(num_dataset_parts)):
+        last_index = (i + 1) * SYMBOLS_IN_DATASET_PART
+        create_dataset_part(i, last_index, list_of_characters)
+    
+    create_dataset_part(i, len(pieces) - 1, list_of_characters)
 
     return pieces
+
+def create_dataset_part(i, last_index, list_of_characters):
+    first_index = (i * SYMBOLS_IN_DATASET_PART) - SEQUENCE_LENGTH
+    if i == 0:
+        first_index = (i * SYMBOLS_IN_DATASET_PART)
+        
+    dataset_part = " ".join(list_of_characters[first_index:last_index])
+    with open(DATASET_PART_PATH + "/file_dataset_part" + str(i), "w") as fp:
+        fp.write(dataset_part)
+    
 
 def create_mapping(pieces, mapping_path):
     mappings = {}
@@ -243,31 +241,16 @@ def generate_training_sequences(sequence_length, file_dataset):
         targets.append(int_pieces[i+sequence_length])
 
     # one-hot kodovani sekvence
-    vocabulary_size = len(set(int_pieces)) + 1
+    vocabulary_size = len(json.load(open(MAPPING_PATH, "r")))
 
     inputs = keras.utils.to_categorical(inputs, num_classes=vocabulary_size, dtype='float64')
     targets = np.array(targets)
 
     return inputs, targets
 
-def add_mapping_to_end():
-    append_part = " "
-    with open(MAPPING_PATH, "r") as fp:
-        mappings = json.load(fp)
-    
-    for word in mappings:
-        append_part = append_part + " " + word
-    
-    for path, subdirs, files in os.walk(DATASET_PART_PATH):
-        for file in files:
-            with (open(path + "/" + file, "a")) as fp:
-                fp.write(append_part)
-
 def main():
-    preprocess(MIDI_DATASET_PATH)
-    pieces = create_dataset_files(SAVE_DIR, "file_seed", SEQUENCE_LENGTH)
-    create_mapping(pieces, MAPPING_PATH)
-    add_mapping_to_end()
+    #preprocess(MIDI_DATASET_PATH)
+    pieces = create_dataset_files(SAVE_DIR, "dataset_entire", SEQUENCE_LENGTH)
 
 if __name__ == "__main__":
     main()
