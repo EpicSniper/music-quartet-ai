@@ -9,7 +9,7 @@ NUM_UNITS = [256, 256]           # [256] [256, 256, 256, 256]
 LOSS = "sparse_categorical_crossentropy"
 LEARNING_RATE = 0.001
 EPOCHS = 100                 # 40 - 100
-BATCH_SIZE = 256
+BATCH_SIZE = 64
 SAVE_MODEL_PATH = "model-" + str(int(1/MIN_ACCEPTABLE_DURATION)) + "-" + str(SEQUENCE_LENGTH) + ".h5"
 
 
@@ -52,13 +52,23 @@ def train(dataset_file, output_units=OUTPUT_UNITS, num_units=NUM_UNITS, loss=LOS
     # ulozit model
     model.save(SAVE_MODEL_PATH)
 
+    del inputs
+    del targets
+    del model
 
-if __name__ == "__main__":
+def train_from_file(path, file):
+    train(os.path.join(path, file))
+    # smaze nauceny dataset
+    os.remove(path + "/" + file)
+
+def main():
     for path, subdirs, files in os.walk(DATASET_PART_PATH):
         for file in files:
             if file.endswith(NAME_SUFFIX):
-                train(os.path.join(path, file))
-                # smaze nauceny dataset
-                os.remove(path + "/" + file)
+                train_from_file(path, file)
+                
     print("No dataset part found!")
+
+if __name__ == "__main__":
+    main()
             
