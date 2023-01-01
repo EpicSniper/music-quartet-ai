@@ -3,12 +3,13 @@ from mapping import MAPPING_PATH
 import tensorflow.keras as keras
 import json
 import os
+import datetime
 
 OUTPUT_UNITS = len(json.load(open(MAPPING_PATH, "r")))
 NUM_UNITS = [256, 256]           # [256] [256, 256, 256, 256]
 LOSS = "sparse_categorical_crossentropy"
 LEARNING_RATE = 0.001
-EPOCHS = 100                 # 40 - 100
+EPOCHS = 70                 # 40 - 100
 BATCH_SIZE = 64
 SAVE_MODEL_PATH = "model-" + str(int(1/MIN_ACCEPTABLE_DURATION)) + "-" + str(SEQUENCE_LENGTH) + ".h5"
 
@@ -34,6 +35,7 @@ def build_model(output_units, num_units, loss, learning_rate):
 
 def train(dataset_file, output_units=OUTPUT_UNITS, num_units=NUM_UNITS, loss=LOSS, learning_rate=LEARNING_RATE):
     print(SAVE_MODEL_PATH)
+    print(datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
     
     # generace treninkovych sekvenci
     inputs, targets = generate_training_sequences(SEQUENCE_LENGTH, dataset_file)
@@ -51,6 +53,7 @@ def train(dataset_file, output_units=OUTPUT_UNITS, num_units=NUM_UNITS, loss=LOS
 
     # ulozit model
     model.save(SAVE_MODEL_PATH)
+    model.save("models/" + datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S") + SAVE_MODEL_PATH)
 
     del inputs
     del targets
