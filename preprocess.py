@@ -11,7 +11,7 @@ SAVE_DIR = "dataset"
 SINGLE_FILE_DATASET = "file_dataset"
 SEQUENCE_LENGTH = 256
 DATASET_PART_PATH = "file_dataset_parts"
-SYMBOLS_IN_DATASET_PART = 4096
+SYMBOLS_IN_DATASET_PART = 2048
 # delka je v hodnotach ctvrtinove noty (ctvrtova nota = 1, cela nota = 4)
 MIN_ACCEPTABLE_DURATION = 1/4
 NAME_SUFFIX = "-" + str(int(1/MIN_ACCEPTABLE_DURATION)) + "-" + str(SEQUENCE_LENGTH)

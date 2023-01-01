@@ -4,8 +4,8 @@ MAPPING_PATH = "mapping.json"
 SYMBOL_REST = "r"
 SYMBOL_END_OF_PIECEL = "/"
 SYMBOL_EXTENDER = "_"
-PITCH_MINIMUM = 0           # default 0
-PITCH_MAXIMUM = 127         # default 127
+PITCH_MINIMUM = 20           # default 0
+PITCH_MAXIMUM = 110         # default 127
 
 def create_mapping_from_dataset(mapping_path=MAPPING_PATH):
     mappings = {}

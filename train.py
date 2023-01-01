@@ -65,6 +65,7 @@ def main():
     for path, subdirs, files in os.walk(DATASET_PART_PATH):
         for file in files:
             if file.endswith(NAME_SUFFIX):
+                print(file)
                 train_from_file(path, file)
                 
     print("No dataset part found!")
