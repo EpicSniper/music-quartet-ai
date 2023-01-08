@@ -11,7 +11,7 @@ SAVE_DIR = "dataset"
 SINGLE_FILE_DATASET = "file_dataset"
 SEQUENCE_LENGTH = 256
 DATASET_PART_PATH = "file_dataset_parts"
-SYMBOLS_IN_DATASET_PART = 2048
+SYMBOLS_IN_DATASET_PART = 4096 * 12
 # delka je v hodnotach ctvrtinove noty (ctvrtova nota = 1, cela nota = 4)
 MIN_ACCEPTABLE_DURATION = 1/4
 NAME_SUFFIX = "-" + str(int(1/MIN_ACCEPTABLE_DURATION)) + "-" + str(SEQUENCE_LENGTH)
@@ -179,7 +179,7 @@ def create_dataset_files(dataset_path, file_datase_path, sequence_length):
             last_index = (i + 1) * SYMBOLS_IN_DATASET_PART
             create_dataset_part(i, last_index, list_of_characters)
         
-        create_dataset_part(i, len(pieces) - 1, list_of_characters)
+        create_dataset_part(i + 1, len(pieces) - 1, list_of_characters)
 
         return pieces
     
@@ -230,13 +230,13 @@ def generate_training_sequences(sequence_length, file_dataset):
     # one-hot kodovani sekvence
     vocabulary_size = len(json.load(open(MAPPING_PATH, "r")))
 
-    inputs = keras.utils.to_categorical(inputs, num_classes=vocabulary_size, dtype='float64')
+    inputs = keras.utils.to_categorical(inputs, num_classes=vocabulary_size)
     targets = np.array(targets)
 
     return inputs, targets
 
 def main():
-    preprocess(MIDI_DATASET_PATH)
+    #preprocess(MIDI_DATASET_PATH)
     pieces = create_dataset_files(SAVE_DIR, "dataset_entire", SEQUENCE_LENGTH)
 
 if __name__ == "__main__":
