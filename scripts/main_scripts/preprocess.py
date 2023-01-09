@@ -1,6 +1,5 @@
 import os
 import music21 as m21
-import json
 import sys
 import log
 
@@ -180,9 +179,10 @@ def create_dataset_files(dataset_path, file_datase_path, sequence_length):
         
         for i in range(0, int(num_dataset_parts)):
             last_index = (i + 1) * SYMBOLS_IN_DATASET_PART
-            create_dataset_part(i, last_index, list_of_characters)
+            # dataset parts are now shit/10 option
+            # create_dataset_part(i, last_index, list_of_characters)
         
-        create_dataset_part(i + 1, len(pieces) - 1, list_of_characters)
+        # create_dataset_part(i + 1, len(pieces) - 1, list_of_characters)
 
         return pieces
     
@@ -202,47 +202,9 @@ def create_dataset_part(i, last_index, list_of_characters):
         first_index = (i * SYMBOLS_IN_DATASET_PART)
         
     dataset_part = convert_array_to_part(list_of_characters[first_index:last_index])
+    
     with open(DATASET_PART_PATH + "/part-" + str(i) + NAME_SUFFIX, "w") as fp:
         fp.write(dataset_part)
-
-def convert_pieces_to_int(pieces):
-    int_pieces = []
-
-    # nacist soubor s mapovanim
-    with open(MAPPING_PATH, "r") as fp:
-        mappings = json.load(fp)
-
-    # prekonvertovat string skladeb na list
-    pieces = pieces.split()
-
-    # namapovat skladby na integery
-    for symbol in pieces:
-        int_pieces.append(mappings[symbol])
-    
-    return int_pieces
-
-def generate_training_sequences(sequence_length, file_dataset):
-
-    # nacist skladby a namapovat je na integery
-    pieces = load(file_dataset)
-    int_pieces = convert_pieces_to_int(pieces)
-
-    # generace trenovaci sekvence
-    # 200 symbolu, koukam dozadu na 64 symbolu, 200 - 64 = 136 pruchodu
-    inputs = []
-    targets = []
-    num_sequences = len(int_pieces) - sequence_length
-    for i in range(num_sequences):
-        inputs.append(int_pieces[i:i+sequence_length])
-        targets.append(int_pieces[i+sequence_length])
-
-    # one-hot kodovani sekvence
-    vocabulary_size = len(json.load(open(MAPPING_PATH, "r")))
-
-    inputs = keras.utils.to_categorical(inputs, num_classes=vocabulary_size)
-    targets = np.array(targets)
-
-    return inputs, targets
 
 def main():
     #preprocess(MIDI_DATASET_PATH)
