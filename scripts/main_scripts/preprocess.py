@@ -10,7 +10,6 @@ MIDI_DATASET_PATH = ROOT_DIRECTORY + "/MIDI/training_sample"
 SAVE_DIR = ROOT_DIRECTORY + "/dataset"
 SINGLE_FILE_DATASET = ROOT_DIRECTORY + "/single_file_datasets/dataset_file"
 SEQUENCE_LENGTH = 256
-DATASET_PART_PATH = ROOT_DIRECTORY + "/file_dataset_parts"
 SYMBOLS_IN_DATASET_PART = 4096
 # delka je v hodnotach ctvrtinove noty (ctvrtova nota = 1, cela nota = 4)
 MIN_ACCEPTABLE_DURATION = 1/4
@@ -173,16 +172,6 @@ def create_dataset_files(dataset_path, file_datase_path, sequence_length):
         # ulozit string, kde jsou vsechny datasety
         with open(file_datase_path + NAME_SUFFIX, "w") as fp:
             fp.write(pieces)
-        
-        list_of_characters = convert_part_to_array(pieces)
-        num_dataset_parts = len(list_of_characters) / SYMBOLS_IN_DATASET_PART
-        
-        for i in range(0, int(num_dataset_parts)):
-            last_index = (i + 1) * SYMBOLS_IN_DATASET_PART
-            # dataset parts are now shit/10 option
-            # create_dataset_part(i, last_index, list_of_characters)
-        
-        # create_dataset_part(i + 1, len(pieces) - 1, list_of_characters)
 
         return pieces
     
@@ -195,16 +184,6 @@ def convert_part_to_array(part):
 
 def convert_array_to_part(array):
     return " ".join(array)
-
-def create_dataset_part(i, last_index, list_of_characters):
-    first_index = (i * SYMBOLS_IN_DATASET_PART) - SEQUENCE_LENGTH
-    if i == 0:
-        first_index = (i * SYMBOLS_IN_DATASET_PART)
-        
-    dataset_part = convert_array_to_part(list_of_characters[first_index:last_index])
-    
-    with open(DATASET_PART_PATH + "/part-" + str(i) + NAME_SUFFIX, "w") as fp:
-        fp.write(dataset_part)
 
 def main():
     #preprocess(MIDI_DATASET_PATH)

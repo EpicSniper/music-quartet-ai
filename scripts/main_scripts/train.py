@@ -1,4 +1,4 @@
-from preprocess import SEQUENCE_LENGTH, DATASET_PART_PATH, MIN_ACCEPTABLE_DURATION, NAME_SUFFIX
+from preprocess import SEQUENCE_LENGTH, MIN_ACCEPTABLE_DURATION, NAME_SUFFIX
 from mapping import MAPPING_PATH
 from training_sequences import generate_from_file, generate_using_checkpoint
 import tensorflow.keras as keras
@@ -82,16 +82,6 @@ def train_using_checkpoints():
     log.logMessage("Checkpoint number: " + str(read_checkpoint()))
     train()
 
-def train_using_parts():
-    for path, subdirs, files in os.walk(DATASET_PART_PATH):
-        for file in files:
-            if file.endswith(NAME_SUFFIX):
-                print(file)
-                train_from_file(path, file)
-                
-    print("No dataset part found!")
-    log.logMessage("No dataset part found!")
-
 def read_checkpoint():
     try:
         with open(ROOT_DIRECTORY + "/checkpoint" + NAME_SUFFIX, "r") as f:
@@ -107,7 +97,6 @@ def update_checkpoint(checkpoint_number):
 
 def main():
     train_using_checkpoints()
-    # train_using_parts()
     # train_from_file(path_to_file)
 
 if __name__ == "__main__":
