@@ -7,7 +7,7 @@ import os
 import datetime
 import log
 
-ROOT_DIRECTORY = "../.."
+ROOT_DIRECTORY = os.path.realpath("../..")
 OUTPUT_UNITS = len(json.load(open(MAPPING_PATH, "r")))
 NUM_UNITS = [256]           # [256] [256, 256, 256, 256]
 LOSS = "sparse_categorical_crossentropy"
@@ -41,7 +41,6 @@ def build_model(output_units, num_units, loss, learning_rate):
 
 def train(dataset_file="", output_units=OUTPUT_UNITS, num_units=NUM_UNITS, loss=LOSS, learning_rate=LEARNING_RATE):
     print(SAVE_MODEL_PATH)
-    print(datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
     
     # generace treninkovych sekvenci
     inputs, targets = generate_inputs_and_targets(SEQUENCE_LENGTH, dataset_file)
@@ -62,6 +61,7 @@ def load_model(output_units, num_units, loss, learning_rate):
 
 def save_model(model, dataset_file):
     model.save(SAVE_MODEL_PATH)
+    os.makedirs(SAVE_BACKUP_MODEL_PATH,exist_ok=True)
     model.save(SAVE_BACKUP_MODEL_PATH + "/" + datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S") + MODEL_NAME)
     if dataset_file == "":
         update_checkpoint(read_checkpoint() + 1)

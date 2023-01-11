@@ -3,7 +3,7 @@ import os
 import datetime
 
 # Set up logging
-log_file = os.path.join(os.path.abspath(os.path.dirname(__file__)), '../..', 'Log.txt')
+log_file = os.path.join(os.path.abspath(os.path.dirname(__file__)), '../..', 'log.txt')
 logging.basicConfig(filename=log_file, level=logging.INFO)
 
 def logMessage(message):

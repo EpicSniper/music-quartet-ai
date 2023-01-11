@@ -70,7 +70,8 @@ def generate_using_checkpoint(sequence_length, checkpoint_number):
         print("Checkpoint " + str(checkpoint_number) + " is out of range!")
         log.logMessage("Checkpoint " + str(checkpoint_number) + " is out of range!")
     
-    log.logMessage("Checkpoint number " + str(checkpoint_number) + " in dataset " + SINGLE_FILE_DATASET + NAME_SUFFIX)
+    log.logMessage("Checkpoint number " + str(checkpoint_number) + "/" + str(batch_size) + " in dataset " + SINGLE_FILE_DATASET + NAME_SUFFIX)
+    print("Checkpoint number " + str(checkpoint_number) + "/" + str(batch_size) + " in dataset " + SINGLE_FILE_DATASET + NAME_SUFFIX)
     int_pieces = convert_pieces_to_int(dataset)
 
     # Create empty lists to store the inputs and targets
