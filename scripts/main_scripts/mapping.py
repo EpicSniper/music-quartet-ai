@@ -1,14 +1,10 @@
+import constansts as const
 import json
 
-ROOT_DIRECTORY = "../.."
-MAPPING_PATH = ROOT_DIRECTORY + "/mapping.json"
-SYMBOL_REST = "r"
-SYMBOL_END_OF_PIECE = "/"
-SYMBOL_EXTENDER = "_"
 PITCH_MINIMUM = 20           # default 0
 PITCH_MAXIMUM = 110         # default 127
 
-def create_mapping_from_dataset(mapping_path=MAPPING_PATH):
+def create_mapping_from_dataset(mapping_path=const.MAPPING_PATH):
     mappings = {}
 
     # vytvorit slovnik
@@ -23,7 +19,7 @@ def create_mapping_from_dataset(mapping_path=MAPPING_PATH):
     with open(mapping_path, "w") as fp:
         json.dump(mappings, fp, indent=4)
 
-def create_mapping_all(mapping_path=MAPPING_PATH):
+def create_mapping_all(mapping_path=const.MAPPING_PATH):
     mappings = {}
 
     # rozmezi vysky tonu v midi
@@ -31,9 +27,9 @@ def create_mapping_all(mapping_path=MAPPING_PATH):
         mappings[i + PITCH_MINIMUM] = i
     
     # pridani symbolu pro pomlku, konce skladby a prodlouzeni noty/pomlky
-    mappings[SYMBOL_REST] = PITCH_MAXIMUM - PITCH_MINIMUM + 1
-    mappings[SYMBOL_END_OF_PIECE] = PITCH_MAXIMUM - PITCH_MINIMUM + 2
-    mappings[SYMBOL_EXTENDER] = PITCH_MAXIMUM - PITCH_MINIMUM + 3
+    mappings[const.SYMBOL_REST] = PITCH_MAXIMUM - PITCH_MINIMUM + 1
+    mappings[const.SYMBOL_END_OF_PIECE] = PITCH_MAXIMUM - PITCH_MINIMUM + 2
+    mappings[const.SYMBOL_EXTENDER] = PITCH_MAXIMUM - PITCH_MINIMUM + 3
 
     # ulozeni json souboru za ucelem mapovani
     with open(mapping_path, "w") as fp:

@@ -1,23 +1,21 @@
+import constansts as const
 import json
 import tensorflow.keras as keras
 import numpy as np
 import music21 as m21
 from music21 import instrument as inst
-from preprocess import SEQUENCE_LENGTH, MIN_ACCEPTABLE_DURATION
-from mapping import SYMBOL_END_OF_PIECE, SYMBOL_REST, SYMBOL_EXTENDER, MAPPING_PATH
-from train import SAVE_MODEL_PATH
 
 class PieceGenerator:
 
-    def __init__(self, model_path=SAVE_MODEL_PATH):
+    def __init__(self, model_path=const.ACTUAL_MODEL_PATH):
 
         self.model_path = model_path
         self.model = keras.models.load_model(model_path)
 
-        with open(MAPPING_PATH, "r") as fp:
+        with open(const.MAPPING_PATH, "r") as fp:
             self._mappings = json.load(fp)
         
-        self._start_symbols = [SYMBOL_END_OF_PIECE] * SEQUENCE_LENGTH
+        self._start_symbols = [const.SYMBOL_END_OF_PIECE] * const.SEQUENCE_LENGTH
 
     def generate_piece(self, seed, num_steps, max_sequence_length, temperature):
 
@@ -50,7 +48,7 @@ class PieceGenerator:
             output_symbol = [k for k, v in self._mappings.items() if v == output_int][0]
 
             # zkontrolovat, jestli nejsme na konci
-            if output_symbol == SYMBOL_END_OF_PIECE:
+            if output_symbol == const.SYMBOL_END_OF_PIECE:
                 break
 
             piece.append(output_symbol)
@@ -69,7 +67,7 @@ class PieceGenerator:
 
         return index
 
-    def save_piece(self, piece, step_duration=MIN_ACCEPTABLE_DURATION, format="midi", filename="mastrpic.mid"):
+    def save_piece(self, piece, step_duration=const.MIN_ACCEPTABLE_DURATION, format="midi", filename="mastrpic.mid"):
 
         # vytvorit music21 stream
         stream = m21.stream.Score()
@@ -107,13 +105,13 @@ def convert_part_to_music21(part_symbols, instrument, step_duration):
     stream.append(instrument)
     for i, symbol in enumerate(part_symbols):
         # symbol noty nebo pomlky
-        if symbol != SYMBOL_EXTENDER or i + 1 == len(part_symbols):
+        if symbol != const.SYMBOL_EXTENDER or i + 1 == len(part_symbols):
             
             if start_symbol is not None:
                 duration = step_duration * step_counter     # 0.25 * 4 = 1 -> ctvrtova nota
 
                 # symbol je pomlka
-                if start_symbol == SYMBOL_REST:
+                if start_symbol == const.SYMBOL_REST:
                     m21_event = m21.note.Rest(quarterLength=duration)
 
                 # symbol je nota
@@ -135,7 +133,7 @@ def convert_part_to_music21(part_symbols, instrument, step_duration):
 if __name__ == "__main__":
     mg = PieceGenerator()
     seed = "72 67 60 48 _ _ _ _ _ _ _ 55 _ _ _ _ 72 67 _ 52 74 _ _ _ 76 67 _ 55 77 _ _ _ 79 72 64 48 _ _ _ _ 79 72 _ 55 _ _ _ _ 72 72 _ 52 _ _ _ _ _ _ _ 55 _ _ _ _ 81 77 65 53 _ _ _ _ 84 _ _ 60 _ _ _ _ 83 77 67 57 _ _ _ _ 81 _ _ 60 _ _ _ _ 79 76 64 48 _ _ _ _ _ _ _ 55 _ _ _ _ r r r 52 _ _ _ _ _ _ 64 55 _ _ _ _ 77 72 65 50 _ _ _ _ 76 69 _ 57 _ _ _ _ 77 72 64 53 _ _ _ _ 79 69 _ 57 _ _ _ _ 79 72 60 48 _ _ _ _ 76 67 _ 55 74 _ _ _ 72 72 _ 52 _ _ _ _ 76 67 _ 55 _ _ _ _ 74 67 55 50 _ _ _ _ r r r r _ _ _ _ 77 71 59 47 _ _ _ _ r r r r _ _ _ _ 76 72 60 48 _ _ _ _ 74 67 60 48 _ _ _ _ 72 64 60 48 _ _ _ _ 71 60 60 43 _ _ _ _"
-    piece = mg.generate_piece(seed, 512, SEQUENCE_LENGTH, 1)
+    piece = mg.generate_piece(seed, 512, const.SEQUENCE_LENGTH, 1)
     print(piece)
     print(len(piece))
     stream = mg.save_piece(piece)

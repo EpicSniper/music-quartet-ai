@@ -1,21 +1,8 @@
+import constansts as const
 import os
 import music21 as m21
 import sys
 import log
-
-from mapping import SYMBOL_REST, SYMBOL_END_OF_PIECE, SYMBOL_EXTENDER
-
-ROOT_DIRECTORY = os.path.realpath("../..")
-MIDI_DATASET_PATH = ROOT_DIRECTORY + "/MIDI/training_sample"
-SAVE_DIR = ROOT_DIRECTORY + "/datasets/train"
-SINGLE_FILE_DATASET = "train_dataset_file"
-SINGLE_FILE_DATASET_DIRECTORY = ROOT_DIRECTORY + "/datasets/single_file_datasets"
-SEQUENCE_LENGTH = 256
-SYMBOLS_IN_DATASET_PART = 4096 * 2
-# delka je v hodnotach ctvrtinove noty (ctvrtova nota = 1, cela nota = 4)
-MIN_ACCEPTABLE_DURATION = 1/4
-NAME_DIR_SUFFIX = str(int(1/MIN_ACCEPTABLE_DURATION)) + "-" + str(SEQUENCE_LENGTH)
-NAME_SUFFIX = "-" + NAME_DIR_SUFFIX
 
 def load_pieces_in_midi(dataset_path):
 
@@ -74,7 +61,7 @@ def preprocess (dataset_path, save_directory):
     for i, piece in enumerate(pieces):
 
         # vyfiltrovat skladby, kde jsou trioly, neni 4/4 atd.
-        if not has_acceptable_durations(piece, MIN_ACCEPTABLE_DURATION, i):
+        if not has_acceptable_durations(piece, const.MIN_ACCEPTABLE_DURATION, i):
             continue
 
         # transponovat skladbu do C dur nebo A mol (bez predznamenani)
@@ -84,12 +71,12 @@ def preprocess (dataset_path, save_directory):
         encoded_piece = encode_piece(piece)
 
         # ulozit data skladeb do souboru
-        os.makedirs(save_directory + "/" + NAME_DIR_SUFFIX, exist_ok=True)
-        save_path = os.path.join(save_directory + "/" + NAME_DIR_SUFFIX, str(i))
+        os.makedirs(save_directory + "/" + const.NAME_DIR_SUFFIX, exist_ok=True)
+        save_path = os.path.join(save_directory + "/" + const.NAME_DIR_SUFFIX, str(i))
         with open(save_path, "w") as fp:
             fp.write(encoded_piece)
 
-def encode_piece(piece, time_step=MIN_ACCEPTABLE_DURATION):
+def encode_piece(piece, time_step=const.MIN_ACCEPTABLE_DURATION):
     # pitch = 60, duration = 1 -> [60, "_", "_", "_"] <- pro jednu stopu
     # ve skutecnosti je vysledny string prokladany vsemi party postupne
 
@@ -123,7 +110,7 @@ def encode_piece(piece, time_step=MIN_ACCEPTABLE_DURATION):
                 if step == 0:
                     encoded_part.append(symbol)
                 else:
-                    encoded_part.append(SYMBOL_EXTENDER)
+                    encoded_part.append(const.SYMBOL_EXTENDER)
         
         encoded_parts.append(encoded_part)
     
@@ -137,12 +124,12 @@ def encode_piece(piece, time_step=MIN_ACCEPTABLE_DURATION):
     for part in encoded_parts:
         part_length = len(part)
         while (part_length) < max_part_length[0]:
-            if part_length % (4 / MIN_ACCEPTABLE_DURATION) == 0:
+            if part_length % (4 / const.MIN_ACCEPTABLE_DURATION) == 0:
                 part_length = part_length + 1
-                part.append(SYMBOL_REST)
+                part.append(const.SYMBOL_REST)
             
             part_length = part_length + 1
-            part.append(SYMBOL_EXTENDER)
+            part.append(const.SYMBOL_EXTENDER)
             
     for i, _ in enumerate(max_part_length[1]):
         for part in encoded_parts:
@@ -160,7 +147,7 @@ def load(file_path):
 
 def create_dataset_files(dataset_path, file_datase_path, sequence_length):
 
-    new_piece_delimiter = (SYMBOL_END_OF_PIECE + " ") * sequence_length
+    new_piece_delimiter = (const.SYMBOL_END_OF_PIECE + " ") * sequence_length
     pieces = ""
     # nacist zakodovane skladby a pridat delimitery
     for path, _, files in os.walk(dataset_path):
@@ -172,8 +159,8 @@ def create_dataset_files(dataset_path, file_datase_path, sequence_length):
     pieces = pieces[:-1]
     if pieces != "":
         # ulozit string, kde jsou vsechny datasety
-        os.makedirs(SINGLE_FILE_DATASET_DIRECTORY, exist_ok=True)
-        with open(SINGLE_FILE_DATASET_DIRECTORY + "/" + file_datase_path + NAME_SUFFIX, "w") as fp:
+        os.makedirs(const.SINGLE_FILE_DATASET_DIRECTORY, exist_ok=True)
+        with open(const.SINGLE_FILE_DATASET_DIRECTORY + "/" + file_datase_path + const.NAME_SUFFIX, "w") as fp:
             fp.write(pieces)
 
         return pieces
@@ -189,8 +176,8 @@ def convert_array_to_part(array):
     return " ".join(array)
 
 def main():
-    preprocess(MIDI_DATASET_PATH, SAVE_DIR)
-    create_dataset_files(SAVE_DIR, SINGLE_FILE_DATASET, SEQUENCE_LENGTH)
+    #preprocess(MIDI_DATASET_PATH, SAVE_DIR)
+    create_dataset_files(const.SAVE_DIR, const.SINGLE_FILE_DATASET, const.SEQUENCE_LENGTH)
 
 if __name__ == "__main__":
     main()

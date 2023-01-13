@@ -6,5 +6,5 @@ m21 = music21
 us = m21.environment.UserSettings()
 
 print(us['musicxmlPath'])
-us['musicxmlPath'] = 'C:\Program Files\MuseScore 4\\bin\MuseScore4.exe'
+us['musicxmlPath'] = 'C:/Program Files/MuseScore 4/bin/MuseScore4.exe'
 print(us['musicxmlPath'])
