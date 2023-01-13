@@ -70,11 +70,14 @@ def generate_using_checkpoint(sequence_length, checkpoint_number):
     if batch_size < checkpoint_number:
         print("Checkpoint " + str(checkpoint_number) + " is out of range!")
         log.logMessage("Checkpoint " + str(checkpoint_number) + " is out of range!")
-        delete_checkpoint()
+        if const.TRAIN_ENDLESSLY:
+            delete_checkpoint()
         sys.exit()
     
-    log.logMessage("Checkpoint number " + str(checkpoint_number) + "/" + str(batch_size) + " in dataset " + const.SINGLE_FILE_DATASET + const.NAME_SUFFIX)
-    print("Checkpoint number " + str(checkpoint_number) + "/" + str(batch_size) + " in dataset " + const.SINGLE_FILE_DATASET + const.NAME_SUFFIX)
+    percent = round((checkpoint_number / batch_size) * 100, 2)
+    message = "Checkpoint number " + str(checkpoint_number) + "/" + str(batch_size) + " (" + str(percent) +  "%)" + " in dataset " + const.SINGLE_FILE_DATASET + const.NAME_SUFFIX
+    log.logMessage(message)
+    print(message)
     int_pieces = convert_pieces_to_int(dataset)
 
     # Create empty lists to store the inputs and targets

@@ -22,9 +22,7 @@ def build_model(output_units, num_units, loss, learning_rate):
     return model
 
 
-def train(dataset_file="", output_units=const.OUTPUT_UNITS, num_units=const.NUM_UNITS, loss=const.LOSS, learning_rate=const.LEARNING_RATE):
-    print(const.ACTUAL_MODEL_PATH)
-    
+def train(dataset_file="", output_units=const.OUTPUT_UNITS, num_units=const.NUM_UNITS, loss=const.LOSS, learning_rate=const.LEARNING_RATE):    
     # generace treninkovych sekvenci
     inputs, targets = generate_inputs_and_targets(const.SEQUENCE_LENGTH, dataset_file)
 
@@ -51,8 +49,6 @@ def save_model(model, dataset_file):
 
 def train_from_file(path, file):
     train(os.path.join(path, file))
-    # smaze nauceny dataset
-    os.remove(path + "/" + file)
 
 def generate_inputs_and_targets(sequence_length, dataset_file):
     if dataset_file != "":
@@ -61,8 +57,6 @@ def generate_inputs_and_targets(sequence_length, dataset_file):
         return generate_using_checkpoint(sequence_length, read_checkpoint())
 
 def train_using_checkpoints():
-    print("Checkpoint number: " + str(read_checkpoint()))
-    log.logMessage("Checkpoint number: " + str(read_checkpoint()))
     train()
 
 def main():
