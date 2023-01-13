@@ -178,8 +178,8 @@ def convert_array_to_part(array):
     return " ".join(array)
 
 def main():
-    preprocess(const.MIDI_DATASET_PATH, const.SAVE_DIR)
-    create_dataset_files(const.SAVE_DIR, const.SINGLE_FILE_DATASET, const.SEQUENCE_LENGTH)
+    #preprocess(const.MIDI_DATASET_PATH, const.SAVE_DIR)
+    create_dataset_files(const.SAVE_DIR + const.NAME_DIR_SUFFIX, const.SINGLE_FILE_DATASET, const.SEQUENCE_LENGTH)
 
 if __name__ == "__main__":
     main()
