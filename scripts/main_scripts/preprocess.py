@@ -97,7 +97,7 @@ def encode_piece(piece, time_step=const.MIN_ACCEPTABLE_DURATION):
 
             # zpracovani pomlk
             if isinstance(event, m21.note.Rest):
-                symbol = SYMBOL_REST
+                symbol = const.SYMBOL_REST
             
             if isinstance(event, m21.chord.Chord):
                 # TODO: implementovat dvojhmaty/akordy
@@ -176,7 +176,7 @@ def convert_array_to_part(array):
     return " ".join(array)
 
 def main():
-    #preprocess(MIDI_DATASET_PATH, SAVE_DIR)
+    preprocess(const.MIDI_DATASET_PATH, const.SAVE_DIR)
     create_dataset_files(const.SAVE_DIR, const.SINGLE_FILE_DATASET, const.SEQUENCE_LENGTH)
 
 if __name__ == "__main__":
