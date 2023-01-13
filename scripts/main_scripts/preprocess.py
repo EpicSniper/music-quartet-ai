@@ -21,9 +21,11 @@ def load_pieces_in_midi(dataset_path):
 def has_acceptable_durations(piece, min_acceptable_duration, i):
     for note in piece.flat.notesAndRests:
         if (((note.duration.quarterLength + 0.0000000001) % min_acceptable_duration) > 0.000001):
-            print("Note length in piece number " + str(i) + " not compatible: " + str(note.duration.quarterLength))
-            log.logMessage("Note length in piece number " + str(i) + " not compatible: " + str(note.duration.quarterLength))
+            print("Note length" + str(note.duration.quarterLength) + "in piece number " + str(i) + " not compatible")
+            log.logMessage("Note length" + str(note.duration.quarterLength) + "in piece number " + str(i) + " not compatible")
             return False
+    print("Piece number" + str(i) + "is compatible")
+    log.logMessage("Piece number" + str(i) + "is compatible")
     return True
 
 def transpose(piece):
