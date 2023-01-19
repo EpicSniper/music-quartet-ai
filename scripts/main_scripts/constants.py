@@ -39,7 +39,7 @@ ACTUAL_MODEL_PATH = ROOT_DIRECTORY + "/" + MODEL_NAME
 BACKUP_MODELS_DIRECTORY = ROOT_DIRECTORY + "/models"
 
 OUTPUT_UNITS = len(json.load(open(MAPPING_PATH, "r")))
-NUM_UNITS = [256]           # [256] [256, 256, 256, 256]
+NUM_UNITS = [100]
 LOSS = "sparse_categorical_crossentropy"
 LEARNING_RATE = 0.001
 WEIGHT_DECAY = 0.001

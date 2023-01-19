@@ -1,4 +1,4 @@
-import constansts as const
+import constants as const
 import log
 import tensorflow.keras as keras
 import numpy as np

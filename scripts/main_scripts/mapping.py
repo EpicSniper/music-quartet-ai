@@ -1,4 +1,4 @@
-import constansts as const
+import constants as const
 import json
 
 PITCH_MINIMUM = 20           # default 0

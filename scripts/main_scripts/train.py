@@ -1,8 +1,7 @@
-import constansts as const
+import constants as const
 import tensorflow.keras as keras
 import os
 import datetime
-import log
 from training_sequences import generate_from_file, generate_using_checkpoint, read_checkpoint, update_checkpoint
 
 def build_model(output_units, num_units, loss, learning_rate):

@@ -1,4 +1,4 @@
-import constansts as const
+import constants as const
 from training_sequences import generate_from_file
 from preprocess import create_dataset_files, preprocess
 import os

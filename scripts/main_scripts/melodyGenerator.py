@@ -1,4 +1,4 @@
-import constansts as const
+import constants as const
 import json
 import tensorflow.keras as keras
 import numpy as np
@@ -134,7 +134,7 @@ if __name__ == "__main__":
     mg = PieceGenerator()
     seed = "72 67 60 48 _ _ _ _ _ _ _ 55 _ _ _ _ 72 67 _ 52 74 _ _ _ 76 67 _ 55 77 _ _ _ 79 72 64 48 _ _ _ _ 79 72 _ 55 _ _ _ _ 72 72 _ 52 _ _ _ _ _ _ _ 55 _ _ _ _ 81 77 65 53 _ _ _ _ 84 _ _ 60 _ _ _ _ 83 77 67 57 _ _ _ _ 81 _ _ 60 _ _ _ _ 79 76 64 48 _ _ _ _ _ _ _ 55 _ _ _ _ r r r 52 _ _ _ _ _ _ 64 55 _ _ _ _ 77 72 65 50 _ _ _ _ 76 69 _ 57 _ _ _ _ 77 72 64 53 _ _ _ _ 79 69 _ 57 _ _ _ _ 79 72 60 48 _ _ _ _ 76 67 _ 55 74 _ _ _ 72 72 _ 52 _ _ _ _ 76 67 _ 55 _ _ _ _ 74 67 55 50 _ _ _ _ r r r r _ _ _ _ 77 71 59 47 _ _ _ _ r r r r _ _ _ _ 76 72 60 48 _ _ _ _ 74 67 60 48 _ _ _ _ 72 64 60 48 _ _ _ _ 71 60 60 43 _ _ _ _"
     seed = seed + " " + seed + " " + seed + " " + seed + " " + seed + " " + seed + " " + seed
-    piece = mg.generate_piece(seed, 512, const.SEQUENCE_LENGTH, 0.5)
+    piece = mg.generate_piece(seed, 512, const.SEQUENCE_LENGTH, 1)
     print(piece)
     print(len(piece))
     stream = mg.save_piece(piece)
